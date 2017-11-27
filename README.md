@@ -1,1 +1,1 @@
-# goweb2
+# goweb2-Golangteam
