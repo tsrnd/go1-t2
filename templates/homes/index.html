@@ -1,0 +1,21 @@
+{{define "content"}}
+    <form action="" method="POST" role="form">
+        <legend>SUBMIT FORM GOLANG</legend>
+        {{range .}}
+            <p>{{.}}</p>
+        {{end}}
+        <div class="form-group">
+            <label for="">Full name</label>
+            <input type="text" class="form-control" id="" placeholder="Please name enter!">
+        </div>
+        <div class="form-group">
+            <label for="">email</label>
+            <input type="text" class="form-control" id="" placeholder="Please email enter!">
+        </div>
+         <div class="form-group">
+            <label for="">Password</label>
+            <input type="password" class="form-control" id="" placeholder="Please password enter!">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{{end}}
