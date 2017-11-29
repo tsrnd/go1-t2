@@ -5,7 +5,7 @@ import (
 	"log"
 	"path/filepath"
 
-	"go_web_app/helper"
+	"goweb2/helper"
 )
 
 type HomesView struct {
@@ -16,7 +16,7 @@ type HomesView struct {
 var Homes HomesView
 
 func HomesFiles() []string {
-	files, err := filepath.Glob("templates/homes/includes/*.tmpl")
+	files, err := filepath.Glob("templates/homes/includes/*.html")
 	if err != nil {
 		log.Panic(err)
 	}
@@ -25,7 +25,7 @@ func HomesFiles() []string {
 }
 
 func init() {
-	indexFiles := append(HomesFiles(), "templates/homes/index.tmpl")
+	indexFiles := append(HomesFiles(), "templates/homes/index.html")
 	Homes.Index = helper.Page{
 		Template: template.Must(template.New("index").ParseFiles(indexFiles...)),
 		Layout:   "my_layout",

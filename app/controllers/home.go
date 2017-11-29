@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"go_web_app/views"
+	"goweb2/app/models"
+	"goweb2/views"
 	"net/http"
 
-	"go_web_app/helper"
+	"goweb2/helper"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -16,11 +17,11 @@ type HomeController struct {
 var Homes HomeController
 
 func (self HomeController) Index(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
-
-	// Pretend to lookup cats in some way.
-	Hobbies := []string{"heathcliff", "garfield"}
-	// render the view
-	return views.Homes.Index.Render(w, Hobbies)
+	val, err := models.AllTests()
+	if err != nil {
+		return err
+	}
+	return views.Homes.Index.Render(w, val)
 }
 
 func (self *HomeController) ReqKey(a helper.Action) httprouter.Handle {
