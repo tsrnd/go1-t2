@@ -8,11 +8,19 @@ import (
 )
 
 func LayoutFiles() []string {
-	files, err := filepath.Glob("templates/layouts/*.tmpl")
+	files, err := filepath.Glob("templates/layouts/*.html")
 	if err != nil {
 		log.Panic(err)
 	}
 	return files
+}
+
+func LayoutFilesIncludes() []string {
+	filesInc, err := filepath.Glob("templates/layouts/includes/*.html")
+	if err != nil {
+		log.Panic(err)
+	}
+	return filesInc
 }
 
 type View struct {
