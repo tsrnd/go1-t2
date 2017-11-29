@@ -21,7 +21,11 @@ func (self HomeController) Index(w http.ResponseWriter, r *http.Request, ps http
 	if err != nil {
 		return err
 	}
-	return views.Homes.Index.Render(w, val)
+	compact := map[string]interface{}{
+		"Title": "THIS IS A HOME PAGE!",
+		"Data":  val,
+	}
+	return views.Homes.Index.Render(w, compact)
 }
 
 func (self *HomeController) ReqKey(a helper.Action) httprouter.Handle {

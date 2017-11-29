@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"goweb2/app/models"
 	"goweb2/views"
 	"net/http"
 
@@ -17,11 +16,11 @@ type CartController struct {
 var Cart CartController
 
 func (self CartController) Index(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
-	val, err := models.AllTests()
-	if err != nil {
-		return err
+	compact := map[string]interface{}{
+		"Title": "THIS IS A CARTS PAGE!",
+		"Other": []int{1, 2, 3},
 	}
-	return views.Carts.Index.Render(w, val)
+	return views.Carts.Index.Render(w, compact)
 }
 
 func (self *CartController) ReqKey(a helper.Action) httprouter.Handle {
