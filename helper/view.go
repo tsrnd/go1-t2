@@ -15,6 +15,14 @@ func LayoutFiles() []string {
 	return files
 }
 
+func LayoutFilesIncludes() []string {
+	filesInc, err := filepath.Glob("templates/layouts/includes/*.html")
+	if err != nil {
+		log.Panic(err)
+	}
+	return filesInc
+}
+
 type View struct {
 	Index  Page
 	Show   Page

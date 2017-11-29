@@ -21,6 +21,7 @@ func HomesFiles() []string {
 		log.Panic(err)
 	}
 	files = append(files, helper.LayoutFiles()...)
+	files = append(files, helper.LayoutFilesIncludes()...)
 	return files
 }
 
