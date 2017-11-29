@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	
+
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -18,6 +18,10 @@ func Route() {
 	}
 
 	router.GET("/", home.Perform(home.Index))
+
+	// controller page carts
+	cart := controllers.Cart
+	router.GET("/carts", cart.Perform(cart.Index))
 
 	router.ServeFiles("/public/*filepath", http.Dir("public"))
 	log.Println("Starting server on :", port)
