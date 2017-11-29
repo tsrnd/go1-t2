@@ -8,6 +8,7 @@ import (
 	"goweb2/helper"
 )
 
+// It returns the number of bytes written and any write error encountered.
 type CartsView struct {
 	helper.View
 	Feed helper.Page
@@ -15,8 +16,9 @@ type CartsView struct {
 
 var Carts CartsView
 
+// It returns the number of bytes written and any write error encountered.
 func CartsFiles() []string {
-	files, err := filepath.Glob("templates/homes/includes/*.html")
+	files, err := filepath.Glob("templates/carts/includes/*.html")
 	if err != nil {
 		log.Panic(err)
 	}
