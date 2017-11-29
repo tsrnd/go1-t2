@@ -12,7 +12,10 @@ import (
 func Route() {
 	router := httprouter.New()
 	home := controllers.Homes
-	port := os.Getenv("PORT")
+	port := "8080"
+	if val, ok := os.LookupEnv("PORT"); ok && val != "" {
+		port = val
+	}
 
 	router.GET("/", home.Perform(home.Index))
 
