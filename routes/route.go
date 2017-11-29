@@ -1,7 +1,7 @@
-package routers
+package routes
 
 import (
-	"go_web_app/app/controllers"
+	"goweb2/app/controllers"
 	"log"
 	"net/http"
 
