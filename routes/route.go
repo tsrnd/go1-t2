@@ -4,6 +4,7 @@ import (
 	"goweb2/app/controllers"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -11,7 +12,10 @@ import (
 func Route() {
 	router := httprouter.New()
 	home := controllers.Homes
+
 	router.GET("/", home.Perform(home.Index))
-	log.Println("Starting server on :8000")
-	log.Fatal(http.ListenAndServe(":8000", router))
+	port := os.Getenv("PORT")
+	log.Println("Starting server on :", port)
+
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }
