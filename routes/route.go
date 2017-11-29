@@ -12,10 +12,11 @@ import (
 func Route() {
 	router := httprouter.New()
 	home := controllers.Homes
+	port := os.Getenv("PORT")
 
 	router.GET("/", home.Perform(home.Index))
-	port := os.Getenv("PORT")
-	log.Println("Starting server on :", port)
 
+	router.ServeFiles("/public/*filepath", http.Dir("public"))
+	log.Println("Starting server on :", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
 }
