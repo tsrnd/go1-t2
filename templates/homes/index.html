@@ -1,21 +1,25 @@
 {{define "content"}}
-    <form action="" method="POST" role="form">
-        <legend>SUBMIT FORM GOLANG</legend>
-        {{range .}}
-            <p>{{.}}</p>
-        {{end}}
-        <div class="form-group">
-            <label for="">Full name</label>
-            <input type="text" class="form-control" id="" placeholder="Please name enter!">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <img src="https://img.zanado.com/media/catalog/product/cache/all/thumbnail/255x298/7b8fef0172c2eb72dd8fd366c999954c/7/_/ao_khoac_bomber_nam_nu_1980_phong_cach_39dc.jpg">
+                <div class="caption">
+                    <h3>Áo khoác dù cá tính SID59448</h3>
+                    <span>14.05</span><span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
+                    <p>Áo khoác dù cá tính: Chất liệu dù mềm 
+                        mại thoải mái khi sử dụng. Thiết kế 
+                        kiểu dáng thể thao với cổ trụ,có nón, 
+                        tay dài, dây kéo và đường may chắc chắn 
+                        giúp bạn nam cá tính hơn</p>
+                    <form action="" method="POST">
+                        <input type="hidden" class="form-control" value="id">
+                        <input type="hidden" class="form-control" value="user_id">
+                        <button type="submit" class="btn btn-default">Mua ngay</button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="">email</label>
-            <input type="text" class="form-control" id="" placeholder="Please email enter!">
-        </div>
-         <div class="form-group">
-            <label for="">Password</label>
-            <input type="password" class="form-control" id="" placeholder="Please password enter!">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    </div>
+</div>
 {{end}}
