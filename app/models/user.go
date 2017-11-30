@@ -3,7 +3,6 @@ package models
 import (
 	"database/sql"
 	"fmt"
-	"goweb2/database"
 	"html"
 	"net/http"
 	"regexp"
@@ -40,7 +39,7 @@ func StoreUser(req *http.Request) (result bool, error_msg string) {
 	if password != passwordConf {
 		return false, "The password confirmation does not match."
 	}
-	db, _ := database.ConnectDB()
+	// db, _ := database.ConnectDB()
 	var existsUser string
 	err := db.QueryRow("SELECT name FROM users WHERE email=?", email).Scan(&existsUser)
 	switch {

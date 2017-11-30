@@ -1,21 +1,5 @@
 package models
 
-import (
-	"database/sql"
-	"goweb2/database"
-)
-
-var db *sql.DB
-
-func init() {
-	var err error
-	// db, err = database.ConnectDB(os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_DATABASE"), "utf8")
-	db, err = database.ConnectDB()
-	if err != nil {
-		panic(err.Error())
-	}
-}
-
 type Test struct {
 	Name  string
 	Email string
@@ -24,7 +8,7 @@ type Test struct {
 func AllTests() ([]*Test, error) {
 	rows, err := db.Query("SELECT name, email FROM users")
 	if err != nil {
-		
+
 		return nil, err
 	}
 	defer rows.Close()

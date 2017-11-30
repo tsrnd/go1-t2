@@ -1,11 +1,11 @@
 package main
 
 import (
+	"goweb2/app/models"
 	"goweb2/routes"
 )
 
 func main() {
-	// defer db.Close()
-
+	models.ConnectDB()
 	routes.Route()
 }
