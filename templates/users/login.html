@@ -1,0 +1,72 @@
+{{define "content"}}
+<div class="steps active">
+    <div class="step-description">
+        <div class="row">
+        <div class="col-md-6 col-sm-6">
+            <div class="new-customer">
+            <h5>
+                New Customer
+            </h5>
+            <label>
+                <span class="input-radio">
+                <input type="radio" name="user">
+                </span>
+                <span class="text">
+                I wish to subscribe to the Herbal Store newsletter.
+                </span>
+            </label>
+            <label>
+                <span class="input-radio">
+                <input type="radio" name="user">
+                </span>
+                <span class="text">
+                My delivery and billing addresses are the same.
+                </span>
+            </label>
+            <p class="requir">
+                By creating an account you will be able to shop faste be up to date on an order's status, and keep track of the orders you have previously made.
+            </p>
+            <button onclick="javascript:window.location = '/register';">
+                Register
+            </button>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+            <div class="run-customer">
+            <h5>
+                Rerunning Customer
+            </h5>
+            <form action="/login" method="POST">
+                <div class="form-row">
+                <label class="lebel-abs">
+                    Email 
+                    <strong class="red">
+                    *
+                    </strong>
+                </label>
+                <input type="text" class="input namefild" name="">
+                </div>
+                <div class="form-row">
+                <label class="lebel-abs">
+                    Password 
+                    <strong class="red">
+                    *
+                    </strong>
+                </label>
+                <input type="text" class="input namefild" name="">
+                </div>
+                <p class="forgoten">
+                <!-- <a href="#">
+                    Forgoten your password?
+                </a> -->
+                </p>
+                <button>
+                Login
+                </button>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+{{end}}
