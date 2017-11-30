@@ -10,7 +10,8 @@ import (
 
 type UserView struct {
 	helper.View
-	Feed helper.Page
+	Feed  helper.Page
+	Login helper.Page
 }
 
 var User UserView
@@ -26,9 +27,14 @@ func UserFiles() []string {
 }
 
 func init() {
-	indexFiles := append(UserFiles(), "templates/users/index.html")
-	User.Index = helper.Page{
-		Template: template.Must(template.New("index").ParseFiles(indexFiles...)),
+	registerFiles := append(UserFiles(), "templates/users/register.html")
+	loginFiles := append(UserFiles(), "templates/users/login.html")
+	User.Create = helper.Page{
+		Template: template.Must(template.New("register").ParseFiles(registerFiles...)),
+		Layout:   "my_layout",
+	}
+	User.Login = helper.Page{
+		Template: template.Must(template.New("login").ParseFiles(loginFiles...)),
 		Layout:   "my_layout",
 	}
 }

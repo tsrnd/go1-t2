@@ -19,7 +19,10 @@ func Route() {
 	}
 
 	router.GET("/", home.Perform(home.Index))
-	router.GET("/register", user.Perform(user.Index))
+	router.GET("/register", user.Perform(user.Register))
+	router.POST("/register", user.Perform(user.Store))
+	router.GET("/login", user.Perform(user.LoginPage))
+	// router.POST("/login", user.Perform(user.Login))
 
 	// controller page carts
 	cart := controllers.Cart
