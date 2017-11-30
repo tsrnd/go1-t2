@@ -4,7 +4,6 @@ import (
 	"html/template"
 	"log"
 	"path/filepath"
-
 	"goweb2/helper"
 )
 
@@ -12,6 +11,7 @@ type UserView struct {
 	helper.View
 	Feed  helper.Page
 	Login helper.Page
+	Contact helper.Page
 }
 
 var User UserView
@@ -29,12 +29,17 @@ func UserFiles() []string {
 func init() {
 	registerFiles := append(UserFiles(), "templates/users/register.html")
 	loginFiles := append(UserFiles(), "templates/users/login.html")
+	contactFiles := append(UserFiles(), "templates/users/contact.html")
 	User.Create = helper.Page{
 		Template: template.Must(template.New("register").ParseFiles(registerFiles...)),
 		Layout:   "my_layout",
 	}
 	User.Login = helper.Page{
 		Template: template.Must(template.New("login").ParseFiles(loginFiles...)),
+		Layout:   "my_layout",
+	}
+	User.Contact = helper.Page{
+		Template: template.Must(template.New("contact").ParseFiles(contactFiles...)),
 		Layout:   "my_layout",
 	}
 }

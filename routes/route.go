@@ -22,6 +22,7 @@ func Route() {
 	router.GET("/register", user.Perform(user.Register))
 	router.POST("/register", user.Perform(user.Store))
 	router.GET("/login", user.Perform(user.LoginPage))
+	router.GET("/contact", user.Perform(user.ShowContactPage))
 	// router.POST("/login", user.Perform(user.Login))
 
 	// controller page carts

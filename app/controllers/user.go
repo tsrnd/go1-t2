@@ -5,7 +5,6 @@ import (
 	"goweb2/helper"
 	"goweb2/views"
 	"net/http"
-
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -42,6 +41,13 @@ func (self UserController) LoginPage(w http.ResponseWriter, r *http.Request, ps 
 		"Title": "Login",
 	}
 	return views.User.Login.Render(w, compact)
+}
+
+func (self UserController) ShowContactPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
+	compact := map[string]interface{}{
+		"Title": "Contact page",
+	}
+	return views.User.Contact.Render(w, compact)
 }
 
 // func (self UserController) Login(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
