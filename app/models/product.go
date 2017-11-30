@@ -1,20 +1,5 @@
 package models
 
-import (
-	"goweb2/database"
-)
-
-/*
- * Init database
- */
-func init()  {
-	var err error
-	db, err = database.ConnectDB()
-	if err != nil {
-		panic(err.Error())
-	}
-}
-
 /**
  * Product struct
  */
