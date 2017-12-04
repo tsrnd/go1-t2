@@ -78,24 +78,26 @@
                         </div>
                         <hr class="border">
                         <div class="wided">
-                        <div class="qty">
-                            Qty &nbsp;&nbsp;: 
-                            <select>
-                                <option>1</option>
-                            </select>
-                        </div>
-                        <div class="button_group">
-                            <button class="button" >Add To Cart</button>
-                            <button class="button compare">
-                                <i class="fa fa-exchange"></i>
-                            </button>
-                            <button class="button favorite">
-                                <i class="fa fa-heart-o"></i>
-                            </button>
-                            <button class="button favorite">
-                                <i class="fa fa-envelope-o"></i>
-                            </button>
-                        </div>
+                        <form action="" id="form-add-to-cart"  method="POST">
+                            <div class="qty">
+                                Qty &nbsp;&nbsp;: 
+                                <input type="number" name="quantity" value="1" style="width:30%">
+                                <input type="hidden" name="price" value="{{ .Price }}">
+                                <input type="hidden" name="product_id" value="{{ .Id }}">                                                                
+                            </div>
+                            <div class="button_group">
+                                <button class="button" >Add To Cart</button>
+                                <a href="#" class="button compare btn btn-default">
+                                    <i class="fa fa-exchange"></i>
+                                </a>
+                                <a href="#" class="button favorite btn btn-default">
+                                    <i class="fa fa-heart-o"></i>
+                                </a>
+                                <a href="#" class="button favorite btn btn-default">
+                                    <i class="fa fa-envelope-o"></i>
+                                </a>
+                            </div>
+                        </form>
                         </div>
                         <div class="clearfix"></div>
                         <hr class="border">
@@ -886,4 +888,8 @@
     </div>
     <div class="clearfix"></div>
     {{end}}
+    <script>
+        var base_url = '{{ .Url }}'
+        var data = {{.Data}}
+    </script>
 {{end}}

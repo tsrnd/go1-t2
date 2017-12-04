@@ -19,8 +19,9 @@
             </tr>
         </thead>
         <tbody>
+            {{ if .Data }}
             {{ range .Data }}
-            <tr>
+            <tr class = "remove-{{ .CartDetailId }}">
                 <td>
                     <img src="public/images/product/{{ .Image }}" alt="">
                 </td>
@@ -33,13 +34,13 @@
                     </div>
                 </td>
                 <td>
-                    <h5>{{ .Price }}</h5>
+                    <h5>{{ .Price }} $</h5>
                 </td>
                 <td>
                     <input  name="quantity" type="number" min="1" value="{{ .Quantity }}" style="width: 100%;" class="quantity">
                 </td>
                 <td>
-                    <h5><strong class="red total-price">{{ .TotalPrice }}</strong></h5>
+                    <h5><strong class="red total-price">{{ .TotalPrice }}  $</strong></h5>
                 </td>
                 <td>
                     <a href="javascript:void(0)" data-id="{{ .CartDetailId }}" data-total-price = "{{ .TotalPrice }}" class="btn btn-danger btn-sm remove-cart">
@@ -50,6 +51,11 @@
                 <td>
                     <a href="javascript:void(0)" data-id="{{ .CartDetailId }}" data-price="{{ .Price }}" data-quantity = "{{ .Quantity }}" class="btn btn-info btn-sm update-cart">Update</a>
                 </td>
+            </tr>
+            {{ end }}
+            {{ else }}
+            <tr>
+                <td colspan="7">Giỏ hàng rỗng</td>
             </tr>
             {{ end }}
         </tbody>
