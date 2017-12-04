@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"goweb2/app/models"
 	"goweb2/helper"
 	"goweb2/views"
@@ -46,7 +45,6 @@ func (self UserController) LoginPage(w http.ResponseWriter, r *http.Request, ps 
 		"Title":     "Login",
 		"FlashData": flashData,
 	}
-	fmt.Println(flashData)
 	return views.User.Login.Render(w, compact)
 }
 
