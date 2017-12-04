@@ -2,9 +2,10 @@ package controllers
 
 import (
 	"goweb2/app/models"
+	"goweb2/helper"
 	"goweb2/views"
 	"net/http"
-	"goweb2/helper"
+
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -27,8 +28,8 @@ func (self HomeController) Index(w http.ResponseWriter, r *http.Request, ps http
 		return err
 	}
 	compact := map[string]interface{}{
-		"Title": "THIS IS A HOME PAGE!",
-		"Products":  products,
+		"Title":    "THIS IS A HOME PAGE!",
+		"Products": products,
 	}
 
 	return views.Homes.Index.Render(w, compact)
