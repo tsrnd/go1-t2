@@ -13,6 +13,7 @@ func Route() {
 	router := httprouter.New()
 	home := controllers.Homes
 	user := controllers.User
+	product := controllers.Product
 	port := "8080"
 	if val, ok := os.LookupEnv("PORT"); ok && val != "" {
 		port = val
@@ -23,6 +24,7 @@ func Route() {
 	router.POST("/register", user.Perform(user.Store))
 	router.GET("/login", user.Perform(user.LoginPage))
 	router.GET("/contact", user.Perform(user.ShowContactPage))
+	router.GET("/product/:id", product.Perform(product.Show))
 	// router.POST("/login", user.Perform(user.Login))
 
 	// controller page carts
