@@ -13,6 +13,7 @@ func Route() {
 	router := httprouter.New()
 	home := controllers.Homes
 	user := controllers.User
+	cart := controllers.Cart
 	product := controllers.Product
 	port := "8080"
 	if val, ok := os.LookupEnv("PORT"); ok && val != "" {
@@ -28,9 +29,9 @@ func Route() {
 	// router.POST("/login", user.Perform(user.Login))
 
 	// controller page carts
-	cart := controllers.Cart
 	router.GET("/carts", cart.Perform(cart.Index))
-
+	router.POST("/remove-cart", cart.Store)
+	router.POST("/update-cart", cart.Update)
 	router.ServeFiles("/public/*filepath", http.Dir("public"))
 	log.Println("Starting server on :", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
