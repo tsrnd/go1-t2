@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/gob"
 	"goweb2/app/models"
 	"goweb2/helper"
 	"goweb2/views"
@@ -27,9 +28,21 @@ func (self HomeController) Index(w http.ResponseWriter, r *http.Request, ps http
 
 		return err
 	}
+	// show cart
+	session, err := store.Get(r, "carts")
+	gob.Register(&Orders{})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return nil
+	}
+	oderId := session.Values["orders"]
+	listCart, _ := models.ShowCart(oderId)
+	//end
 	compact := map[string]interface{}{
 		"Title":    "THIS IS A HOME PAGE!",
 		"Products": products,
+		"Data":     listCart,
+		"Url":      helper.BaseUrl(),
 	}
 
 	return views.Homes.Index.Render(w, compact)

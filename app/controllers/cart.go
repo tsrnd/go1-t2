@@ -60,6 +60,30 @@ func (self CartController) Index(w http.ResponseWriter, r *http.Request, ps http
 
 func (self CartController) Store(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if r.Method == "POST" {
+		session, err := store.Get(r, "carts")
+		gob.Register(&Orders{})
+		if err != nil {
+			http.Redirect(w, r, helper.BaseUrl(), http.StatusSeeOther)
+		}
+		if session.Values["orders"] == nil {
+			orderId, _ := models.InsertOrder()
+			session.Values["orders"] = orderId
+			session.Save(r, w)
+		}
+		idOrder := session.Values["orders"]
+		price, _ := strconv.ParseFloat(r.FormValue("price"), 64)
+		quantity, _ := strconv.Atoi(r.FormValue("quantity"))
+		IdProduct, _ := strconv.Atoi(r.FormValue("product_id"))
+		cartDetailId, _ := models.InsertCartDetail(price, quantity, 1, IdProduct, idOrder)
+		fmt.Println("add", cartDetailId)
+		http.Redirect(w, r, helper.Url("carts"), http.StatusSeeOther)
+	} else {
+		http.Redirect(w, r, helper.BaseUrl(), http.StatusSeeOther)
+	}
+}
+
+func (self CartController) Delete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	if r.Method == "POST" {
 		session, _ := store.Get(r, "carts")
 		orderId := session.Values["orders"]
 		w.Header().Set("Content-Type", "application/json")

@@ -56,7 +56,7 @@
                 <a href="#" class="cart-icon">cart <span class="cart_no" id="count-cart">02</span></a>
                 <ul class="option-cart-item">
                     {{ range .Data }}
-                    <li id="sub-cart-{{ .CartDetailId }}">
+                    <li class="remove-{{ .CartDetailId }}">
                       <div class="cart-item">
                           <div class="image"><img src="/public/images/product/{{ .Image }}" alt=""></div>
                           <div class="item-description">
@@ -64,8 +64,8 @@
                             <p>Quantity: <span class="light-red" id="quantity-{{ .CartDetailId }}">{{ .Quantity }}</span></p>
                           </div>
                           <div class="right">
-                            <p class="price" id="total-price-{{ .CartDetailId }}">{{ .TotalPrice }}</p>
-                            <a href="#" class="remove"><img src="public/images/remove.png" alt="remove"></a>
+                            <p class="price" id="total-price-{{ .CartDetailId }}">{{ .TotalPrice }} $</p>
+                            <a href="javascript:void(0)" class="remove"  data-id="{{ .CartDetailId }}" data-total-price = "{{ .TotalPrice }}"><img src="/public/images/remove.png" alt="remove"></a>
                           </div>
                       </div>
                     </li>
