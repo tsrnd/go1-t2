@@ -33,8 +33,9 @@ func Route() {
 
 	// controller page carts
 	router.GET("/carts", cart.Perform(cart.Index))
-	router.POST("/remove-cart", cart.Store)
+	router.POST("/remove-cart", cart.Delete)
 	router.POST("/update-cart", cart.Update)
+	router.POST("/add-to-cart", cart.Store)
 	router.ServeFiles("/public/*filepath", http.Dir("public"))
 	log.Println("Starting server on :", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))

@@ -5,50 +5,108 @@
             <div class="row">
                 <div class="col-md-9">
                     <div class="products-details">
-                        <div class="preview_image">
-                            <div class="preview-small">
-                                <img id="zoom_03" src="/public/images/product/{{ .Image }}" data-zoom-image="images/products/Large/products-01.jpg" alt="">
-                            </div>
-                            <div class="thum-image">
-                                <ul id="gallery_01" class="prev-thum">
-                                    <li><a href="#" data-image="images/products/medium/products-01.jpg" data-zoom-image="images/products/Large/products-01.jpg"><img src="/public/images/products/thum/products-01.png" alt=""></a></li>
-                                    <li><a href="#" data-image="images/products/medium/products-02.jpg" data-zoom-image="images/products/Large/products-02.jpg"><img src="/public/images/products/thum/products-02.png" alt=""></a></li>
-                                    <li><a href="#" data-image="images/products/medium/products-03.jpg" data-zoom-image="images/products/Large/products-03.jpg"><img src="/public/images/products/thum/products-03.png" alt=""></a></li>
-                                    <li><a href="#" data-image="images/products/medium/products-04.jpg" data-zoom-image="images/products/Large/products-04.jpg"><img src="/public/images/products/thum/products-04.png" alt=""></a></li>
-                                    <li><a href="#" data-image="images/products/medium/products-05.jpg" data-zoom-image="images/products/Large/products-05.jpg"><img src="/public/images/products/thum/products-05.png" alt=""></a></li>
-                                </ul>
-                                <a class="control-left" id="thum-prev" href="javascript:void(0);"><i class="fa fa-chevron-left"></i></a>
-                                <a class="control-right" id="thum-next" href="javascript:void(0);"><i class="fa fa-chevron-right"></i></a>
-                            </div>
+                    <div class="preview_image">
+                        <div class="preview-small">
+                            <img id="zoom_03" src="/public/images/product/{{ .Image }}" data-zoom-image="images/products/Large/products-01.jpg" alt="">
                         </div>
-                        <div class="products-description">
-                            <h5 class="name">{{ .Name }}</h5>
-                            <p><img alt="" src="/public/images/star.png"><a class="review_num" href="#">02 Review(s)</a></p>
-                            <p>Availability: <span class=" light-red">In Stock</span></p>
-                            <p>{{ .Description }}</p>
-                            <hr class="border">
-                            <div class="price">Price : <span class="new_price"> {{ .Price }}<sup>$</sup></span><span class="old_price">450.00<sup>$</sup></span></div>
-                            <hr class="border">
-                            <div class="wided">
-                                <div class="qty">
-                                    Qty &nbsp;&nbsp;: 
-                                    <select>
-                                        <option>1</option>
-                                    </select>
-                                </div>
-                                <div class="button_group">
-                                    <button class="button" >Add To Cart</button>
-                                    <button class="button compare"><i class="fa fa-exchange"></i></button>
-                                    <button class="button favorite"><i class="fa fa-heart-o"></i></button>
-                                    <button class="button favorite"><i class="fa fa-envelope-o"></i></button>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <hr class="border">
-                            <img src="/public/images/share.png" alt="" class="pull-right">
+                        <div class="thum-image">
+                            <ul id="gallery_01" class="prev-thum">
+                                <li>
+                                    <a href="#" data-image="images/products/medium/products-01.jpg" data-zoom-image="images/products/Large/products-01.jpg">
+                                        <img src="/public/images/products/thum/products-01.png" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" data-image="images/products/medium/products-02.jpg" data-zoom-image="images/products/Large/products-02.jpg">
+                                        <img src="/public/images/products/thum/products-02.png" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" data-image="images/products/medium/products-03.jpg" data-zoom-image="images/products/Large/products-03.jpg">
+                                        <img src="/public/images/products/thum/products-03.png" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" data-image="images/products/medium/products-04.jpg" data-zoom-image="images/products/Large/products-04.jpg">
+                                        <img src="/public/images/products/thum/products-04.png" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" data-image="images/products/medium/products-05.jpg" data-zoom-image="images/products/Large/products-05.jpg">
+                                        <img src="/public/images/products/thum/products-05.png" alt="">
+                                    </a>
+                                </li>
+                            </ul>
+                            <a class="control-left" id="thum-prev" href="javascript:void(0);">
+                                <i class="fa fa-chevron-left">
+                                </i>
+                            </a>
+                            <a class="control-right" id="thum-next" href="javascript:void(0);">
+                                <i class="fa fa-chevron-right">
+                                </i>
+                            </a>
                         </div>
                     </div>
-                    <div class="clearfix"></div>
+                    <div class="products-description">
+                        <h5 class="name">{{ .Name }}</h5>
+                        <p>
+                            <img alt="" src="/public/images/star.png">
+                            <a class="review_num" href="#">
+                                02 Review(s)
+                            </a>
+                        </p>
+                        <p>
+                            Availability: 
+                            <span class=" light-red">
+                                In Stock
+                            </span>
+                        </p>
+                        <p>
+                            {{ .Description }}
+                        </p>
+                        <hr class="border">
+                        <div class="price">
+                        Price : 
+                            <span class="new_price">
+                                {{ .Price }}
+                                <sup>$</sup>
+                            </span>
+                            <span class="old_price">
+                                450.00
+                                <sup>$</sup>
+                            </span>
+                        </div>
+                        <hr class="border">
+                        <div class="wided">
+                        <form action="" id="form-add-to-cart"  method="POST">
+                            <div class="qty">
+                                Qty &nbsp;&nbsp;: 
+                                <input type="number" name="quantity" value="1" style="width:30%">
+                                <input type="hidden" name="price" value="{{ .Price }}">
+                                <input type="hidden" name="product_id" value="{{ .Id }}">                                                                
+                            </div>
+                            <div class="button_group">
+                                <button class="button" >Add To Cart</button>
+                                <a href="#" class="button compare btn btn-default">
+                                    <i class="fa fa-exchange"></i>
+                                </a>
+                                <a href="#" class="button favorite btn btn-default">
+                                    <i class="fa fa-heart-o"></i>
+                                </a>
+                                <a href="#" class="button favorite btn btn-default">
+                                    <i class="fa fa-envelope-o"></i>
+                                </a>
+                            </div>
+                        </form>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr class="border">
+                        <img src="/public/images/share.png" alt="" class="pull-right">
+                    </div>
+                    </div>
+                    <div class="clearfix">
+                    </div>
+
                     <div class="tab-box">
                         <div id="tabnav">
                             <ul>
@@ -409,4 +467,8 @@
     </div>
     <div class="clearfix"></div>
     {{end}}
+    <script>
+        var base_url = '{{ .Url }}'
+        var data = {{.Data}}
+    </script>
 {{end}}
