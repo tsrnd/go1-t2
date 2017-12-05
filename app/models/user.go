@@ -2,7 +2,7 @@ package models
 
 import (
 	"database/sql"
-	"fmt"
+	"goweb2/helper"
 	"html"
 	"net/http"
 	"regexp"
@@ -49,7 +49,6 @@ func StoreUser(req *http.Request) (result bool, error_msg string) {
 
 		_, err = db.Exec("INSERT INTO users(name, email, password, phone) VALUES(?, ?, ?, ?)", fullName, email, hashedPassword, telephone)
 		if err != nil {
-			fmt.Println(err)
 			return false, "Server error, unable to create your account"
 		}
 		return true, "User Created!"
@@ -59,3 +58,42 @@ func StoreUser(req *http.Request) (result bool, error_msg string) {
 		return true, "User Created!"
 	}
 }
+
+func Login(res http.ResponseWriter, req *http.Request) (result bool, error_msg string) {
+	email := html.EscapeString(req.FormValue("email"))
+	password := req.FormValue("password")
+	if email == "" || password == "" {
+		return false, "Please inpull all fields"
+	}
+	if !rxEmail.MatchString(email) {
+		return false, "The email must be a valid email address."
+	}
+	var dbEmail, dbPassword, idDb string
+	err := db.QueryRow("Select id, email, password from users where email =?", email).Scan(&idDb, &dbEmail, &dbPassword)
+	if err != nil {
+		return false, "Email not exists!"
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(dbPassword), []byte(password))
+	if err != nil {
+		return false, "Password incorect!"
+	}
+	hashEmail, _ := bcrypt.GenerateFromPassword([]byte(email), bcrypt.DefaultCost)
+	_, err = db.Exec("Update users set token = ? where id = ?", hashEmail, idDb)
+	helper.SetSession("AuthSession", string(hashEmail), res)
+	return true, ""
+}
+
+func CheckLoginWithSession(session string) bool {
+
+	var count int
+	err := db.QueryRow("Select count(id) from users where token =?", session).Scan(&count)
+	if err == nil && count > 0 {
+		return true
+	}
+	return false
+
+}
+
+// func Logout(res http.ResponseWriter, req *http.Request) (result bool, error_msg string) {
+// 	helper.ClearSession("AuthSession", res)
+// }

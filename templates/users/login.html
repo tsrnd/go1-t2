@@ -36,6 +36,11 @@
             <h5>
                 Rerunning Customer
             </h5>
+            {{range .FlashData}}
+            <div class="alert alert-danger">
+                {{.}}       
+            </div>
+            {{end}}
             <form action="/login" method="POST">
                 <div class="form-row">
                 <label class="lebel-abs">
@@ -44,7 +49,7 @@
                     *
                     </strong>
                 </label>
-                <input type="text" class="input namefild" name="">
+                <input type="text" class="input namefild" name="email">
                 </div>
                 <div class="form-row">
                 <label class="lebel-abs">
@@ -53,7 +58,7 @@
                     *
                     </strong>
                 </label>
-                <input type="text" class="input namefild" name="">
+                <input type="password" class="input namefild" name="password">
                 </div>
                 <p class="forgoten">
                 <!-- <a href="#">

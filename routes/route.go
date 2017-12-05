@@ -2,6 +2,7 @@ package routes
 
 import (
 	"goweb2/app/controllers"
+	"goweb2/app/middleware"
 	"log"
 	"net/http"
 	"os"
@@ -19,14 +20,16 @@ func Route() {
 	if val, ok := os.LookupEnv("PORT"); ok && val != "" {
 		port = val
 	}
-
+	var publicChain = []middleware.Middleware{
+		middleware.RedirectIfAuthenticated,
+	}
 	router.GET("/", home.Perform(home.Index))
-	router.GET("/register", user.Perform(user.Register))
-	router.POST("/register", user.Perform(user.Store))
-	router.GET("/login", user.Perform(user.LoginPage))
+	router.GET("/register", middleware.BuildChain(user.Perform(user.Register), publicChain...))
+	router.POST("/register", middleware.BuildChain(user.Perform(user.Store), publicChain...))
+	router.GET("/login", middleware.BuildChain(user.Perform(user.LoginPage), publicChain...))
+	router.POST("/login", middleware.BuildChain(user.Perform(user.Login), publicChain...))
 	router.GET("/contact", user.Perform(user.ShowContactPage))
 	router.GET("/product/:id", product.Perform(product.Show))
-	// router.POST("/login", user.Perform(user.Login))
 
 	// controller page carts
 	router.GET("/carts", cart.Perform(cart.Index))
