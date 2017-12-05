@@ -25,6 +25,23 @@ func LayoutFilesIncludes() []string {
 	return filesInc
 }
 
+func LayoutAdminFiles() []string {
+	files, err := filepath.Glob("templates/layouts/admin/*.html")
+	if err != nil {
+		log.Panic(err)
+	}
+	return files
+}
+
+func LayoutAdminFilesIncludes() []string {
+	filesInc, err := filepath.Glob("templates/layouts/admin/includes/*.html")
+	if err != nil {
+		log.Panic(err)
+	}
+	return filesInc
+}
+
+
 type View struct {
 	Index  Page
 	Show   Page
