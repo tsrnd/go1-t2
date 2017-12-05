@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"encoding/json"
 	"goweb2/helper"
 	"html"
 	"net/http"
@@ -68,8 +69,8 @@ func Login(res http.ResponseWriter, req *http.Request) (result bool, error_msg s
 	if !rxEmail.MatchString(email) {
 		return false, "The email must be a valid email address."
 	}
-	var dbEmail, dbPassword, idDb string
-	err := db.QueryRow("Select id, email, password from users where email =?", email).Scan(&idDb, &dbEmail, &dbPassword)
+	var dbEmail, dbPassword, idDb, nameDb string
+	err := db.QueryRow("Select id, name, email, password from users where email =?", email).Scan(&idDb, &nameDb, &dbEmail, &dbPassword)
 	if err != nil {
 		return false, "Email not exists!"
 	}
@@ -79,14 +80,26 @@ func Login(res http.ResponseWriter, req *http.Request) (result bool, error_msg s
 	}
 	hashEmail, _ := bcrypt.GenerateFromPassword([]byte(email), bcrypt.DefaultCost)
 	_, err = db.Exec("Update users set token = ? where id = ?", hashEmail, idDb)
-	helper.SetSession("AuthSession", string(hashEmail), res)
+	dataAuth := map[string]string{
+		"name":  nameDb,
+		"token": string(hashEmail),
+	}
+	authJson, _ := json.Marshal(dataAuth)
+	helper.SetSession("AuthSession", string(authJson), res)
 	return true, ""
 }
 
 func CheckLoginWithSession(session string) bool {
 
 	var count int
-	err := db.QueryRow("Select count(id) from users where token =?", session).Scan(&count)
+	var authJson = make(map[string]string)
+	err := json.Unmarshal([]byte(session), &authJson)
+	token := string(authJson["token"])
+	if err != nil || token == "" {
+		return false
+	}
+
+	err = db.QueryRow("Select count(id) from users where token =?", token).Scan(&count)
 	if err == nil && count > 0 {
 		return true
 	}
@@ -94,6 +107,6 @@ func CheckLoginWithSession(session string) bool {
 
 }
 
-// func Logout(res http.ResponseWriter, req *http.Request) (result bool, error_msg string) {
+// func Logout(res http.ResponseWriter, req *http.Request) {
 // 	helper.ClearSession("AuthSession", res)
 // }

@@ -36,10 +36,10 @@ func (self ProductController) Show(w http.ResponseWriter, r *http.Request, ps ht
 		"Title":   "THIS IS PRODUCT DETAIL PAGE!",
 		"Product": product,
 		"Data":    listCart,
-		"Url":   helper.BaseUrl(),
+		"Url":     helper.BaseUrl(),
 	}
 
-	return views.Product.Show.Render(w, compact)
+	return views.Product.Show.Render(w, r, compact)
 }
 
 func (self *ProductController) ReqKey(a helper.Action) httprouter.Handle {
