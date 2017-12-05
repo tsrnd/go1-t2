@@ -32,7 +32,7 @@ func (self HomeController) Index(w http.ResponseWriter, r *http.Request, ps http
 		"Products": products,
 	}
 
-	return views.Homes.Index.Render(w, compact)
+	return views.Homes.Index.Render(w, r, compact)
 }
 
 func (self *HomeController) ReqKey(a helper.Action) httprouter.Handle {

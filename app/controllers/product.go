@@ -5,6 +5,7 @@ import (
 	"goweb2/helper"
 	"goweb2/views"
 	"net/http"
+
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -22,11 +23,11 @@ func (self ProductController) Show(w http.ResponseWriter, r *http.Request, ps ht
 		return err
 	}
 	compact := map[string]interface{}{
-		"Title": "THIS IS PRODUCT DETAIL PAGE!",
-		"Product":  product,
+		"Title":   "THIS IS PRODUCT DETAIL PAGE!",
+		"Product": product,
 	}
 
-	return views.Product.Show.Render(w, compact)
+	return views.Product.Show.Render(w, r, compact)
 }
 
 func (self *ProductController) ReqKey(a helper.Action) httprouter.Handle {
