@@ -3,10 +3,10 @@ var totalQuantity = 0;
 jQuery.each(data, function(key, val){
     totalPrice += val.TotalPrice
     totalQuantity += val.Quantity
-    jQuery('#grand-total').text(totalPrice);
-    jQuery('#subcar-total').text(totalPrice)
-    jQuery('#count-cart').text(totalQuantity)
 })
+jQuery('#grand-total').text(totalPrice +' $');
+jQuery('#subcar-total').text(totalPrice +' $')
+jQuery('#count-cart').text(totalQuantity)
 jQuery('body').on('click', 'a.remove-cart', function (){
     var id = jQuery(this).data('id');
     var totalPriceRemove = jQuery(this).data('total-price');
@@ -23,10 +23,9 @@ jQuery('body').on('click', 'a.remove-cart', function (){
                     data: {detailCartId: id},
                     success:function (response) {
                         if (response.statusCode == 1) {
-                            jQuery(that).parent().parent().remove();
-                            jQuery('#sub-cart-'+id).remove();
-                            jQuery('#grand-total').text(grandTotal);
-                            jQuery('#subcar-total').text(grandTotal);
+                            jQuery('.remove-'+id).remove();
+                            jQuery('#grand-total').text(grandTotal +' $');
+                            jQuery('#subcar-total').text(grandTotal +' $');
                             jQuery('.quantity').each(function (keQ, valQ) {
                                 totalCart+= parseInt(jQuery(this).val());
                             })
@@ -42,7 +41,35 @@ jQuery('body').on('click', 'a.remove-cart', function (){
             }
         }
     })
-    
+})
+
+jQuery('body').on('click', 'a.remove', function (){
+    var id = jQuery(this).data('id');
+    var totalPriceRemove = jQuery(this).data('total-price');
+    var grandTotal = parseFloat(jQuery('#grand-total').text()) - totalPriceRemove
+    var that = this;
+    var totalCart = 0;
+    jQuery.ajax({
+        url: base_url+ '/remove-cart',
+        type: "POST",
+        data: {detailCartId: id},
+        success:function (response) {
+            if (response.statusCode == 1) {
+                jQuery('.remove-'+id).remove();
+                jQuery('#grand-total').text(grandTotal +' $');
+                jQuery('#subcar-total').text(grandTotal +' $');
+                jQuery('.quantity').each(function (keQ, valQ) {
+                    totalCart+= parseInt(jQuery(this).val());
+                })
+                jQuery('#count-cart').text(totalCart);
+            } else {
+                console.log("error");
+            }
+        },
+        error:function (error) {
+            console.log(error)
+        }
+    });
 })
 
 // update cart
@@ -66,14 +93,16 @@ jQuery('body').on('click', 'a.update-cart', function (){
             success:function (response) {
                 console.log(response);
                 if (response.statusCode == 1) {
-                    jQuery(that).closest('tr').find('.total-price').text(totalPrice);
+                    jQuery(that).closest('tr').find('.total-price').text(totalPrice+ ' $');
+                    jQuery(that).closest('tr').find('.remove-cart').attr('data-total-price', totalPrice)
+                    jQuery('#total-price-'+ id).next().attr('data-total-price', totalPrice)
                     jQuery('.total-price').each(function(){
                         grandTotal += parseFloat (jQuery(this).text());
                     });
-                    jQuery('#grand-total').text(grandTotal);
+                    jQuery('#grand-total').text(grandTotal +' $');
                     jQuery('#quantity-'+id).text(quantity);
-                    jQuery('#total-price-'+id).text(totalPrice);
-                    jQuery('#subcar-total').text(grandTotal);
+                    jQuery('#total-price-'+id).text(totalPrice +' $');
+                    jQuery('#subcar-total').text(grandTotal +' $');
                     jQuery('.quantity').each(function (keQ, valQ) {
                         totalCartEdit+= parseInt(jQuery(this).val());
                     })
@@ -89,3 +118,10 @@ jQuery('body').on('click', 'a.update-cart', function (){
 
     }
 })
+
+jQuery('#form-add-to-cart').attr('action', base_url+'/add-to-cart');
+
+jQuery('#hot').on('click', '.add-cart', function () {
+    var idForm = jQuery(this).data('id');
+    jQuery('#'+idForm).submit();
+});
