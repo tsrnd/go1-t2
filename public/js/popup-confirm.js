@@ -93,7 +93,9 @@ jQuery('body').on('click', 'a.update-cart', function (){
             success:function (response) {
                 console.log(response);
                 if (response.statusCode == 1) {
-                    jQuery(that).closest('tr').find('.total-price').text(totalPrice);
+                    jQuery(that).closest('tr').find('.total-price').text(totalPrice+ ' $');
+                    jQuery(that).closest('tr').find('.remove-cart').attr('data-total-price', totalPrice)
+                    jQuery('#total-price-'+ id).next().attr('data-total-price', totalPrice)
                     jQuery('.total-price').each(function(){
                         grandTotal += parseFloat (jQuery(this).text());
                     });
