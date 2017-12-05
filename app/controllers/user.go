@@ -22,7 +22,7 @@ var User UserController
 
 func (self UserController) Register(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
 	compact := RegisterStatus{false, "", "Register"}
-	return views.User.Create.Render(w, compact)
+	return views.User.Create.Render(w, r, compact)
 
 }
 
@@ -34,25 +34,24 @@ func (self UserController) Store(w http.ResponseWriter, r *http.Request, ps http
 	} else {
 		compact = RegisterStatus{false, errMsg, "Register Error"}
 	}
-	return views.User.Create.Render(w, compact)
+	return views.User.Create.Render(w, r, compact)
 }
 
 func (self UserController) LoginPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
 
 	flashData := helper.GetFlash("auth_err_msg", w, r)
-
 	compact := map[string]interface{}{
 		"Title":     "Login",
 		"FlashData": flashData,
 	}
-	return views.User.Login.Render(w, compact)
+	return views.User.Login.Render(w, r, compact)
 }
 
 func (self UserController) ShowContactPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
 	compact := map[string]interface{}{
 		"Title": "Contact page",
 	}
-	return views.User.Contact.Render(w, compact)
+	return views.User.Contact.Render(w, r, compact)
 }
 
 func (self UserController) Login(w http.ResponseWriter, r *http.Request, ps httprouter.Params) (a error) {
@@ -62,6 +61,12 @@ func (self UserController) Login(w http.ResponseWriter, r *http.Request, ps http
 		return a
 	}
 
+	http.Redirect(w, r, "/", 302)
+	return a
+}
+
+func (self UserController) Logout(w http.ResponseWriter, r *http.Request, ps httprouter.Params) (a error) {
+	helper.ClearSession("AuthSession", w)
 	http.Redirect(w, r, "/", 302)
 	return a
 }

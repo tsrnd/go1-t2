@@ -66,7 +66,9 @@ func GetSession(key string, r *http.Request) string {
 	var cookieRes string
 	if cookie, err := r.Cookie(key); err == nil {
 		err := cookieHandler.Decode(key, cookie.Value, &cookieRes)
-		fmt.Println("GetSession", err)
+		if err != nil {
+			fmt.Println("GetSession", err)
+		}
 	}
 	return cookieRes
 }

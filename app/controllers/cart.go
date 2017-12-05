@@ -55,7 +55,7 @@ func (self CartController) Index(w http.ResponseWriter, r *http.Request, ps http
 		"Url":   helper.BaseUrl(),
 	}
 	// fmt.Println("cart id", cartDetailId)
-	return views.Carts.Index.Render(w, compact)
+	return views.Carts.Index.Render(w, r, compact)
 }
 
 func (self CartController) Store(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {

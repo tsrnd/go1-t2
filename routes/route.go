@@ -29,6 +29,7 @@ func Route() {
 	router.GET("/login", middleware.BuildChain(user.Perform(user.LoginPage), publicChain...))
 	router.POST("/login", middleware.BuildChain(user.Perform(user.Login), publicChain...))
 	router.GET("/contact", user.Perform(user.ShowContactPage))
+	router.GET("/logout", user.Perform(user.Logout))
 	router.GET("/product/:id", product.Perform(product.Show))
 
 	// controller page carts
