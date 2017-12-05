@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"goweb2/app/controllers"
 	"goweb2/app/middleware"
 
@@ -9,7 +8,6 @@ import (
 )
 
 func FeRoute(router *httprouter.Router) {
-	fmt.Println(router)
 	home := controllers.Homes
 	user := controllers.User
 	cart := controllers.Cart

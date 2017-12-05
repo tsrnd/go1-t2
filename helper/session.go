@@ -9,8 +9,10 @@ import (
 )
 
 var cookieHandler = securecookie.New(
-	securecookie.GenerateRandomKey(64),
-	securecookie.GenerateRandomKey(32),
+	// securecookie.GenerateRandomKey(64),
+	// securecookie.GenerateRandomKey(32),
+	[]byte("12345"),
+	[]byte("1234567890123456"),
 )
 var keyFlash string = "flash-session"
 var store = sessions.NewCookieStore([]byte("golang2-secret-string"))
@@ -63,6 +65,8 @@ func ClearSession(key string, r http.ResponseWriter) {
 }
 
 func GetSession(key string, r *http.Request) string {
+	// fmt.Println(securecookie.GenerateRandomKey(64))
+	// fmt.Println(securecookie.GenerateRandomKey(32))
 	var cookieRes string
 	if cookie, err := r.Cookie(key); err == nil {
 		err := cookieHandler.Decode(key, cookie.Value, &cookieRes)

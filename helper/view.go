@@ -41,7 +41,6 @@ func LayoutAdminFilesIncludes() []string {
 	return filesInc
 }
 
-
 type View struct {
 	Index  Page
 	Show   Page
@@ -69,10 +68,15 @@ func GetAuth(r *http.Request) map[string]string {
 
 func (self *Page) Render(w http.ResponseWriter, r *http.Request, data interface{}) error {
 
+	var isLogin bool = false
+
 	authSession := GetAuth(r)
-	// fmt.Println(len(authSession))
-	sessionData := map[string]string{
-		"AuthName": authSession["name"],
+	if authSession["Name"] != "" {
+		isLogin = true
+	}
+	sessionData := map[string]interface{}{
+		"IsLogin":  isLogin,
+		"AuthData": authSession,
 	}
 	result := map[string]interface{}{
 		"Data":        data,

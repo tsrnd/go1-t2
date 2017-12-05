@@ -40,11 +40,11 @@
               </div>
               <div class="col-md-3">
                 <ul class="usermenu">
-                    {{if eq .PrivateData.AuthName ""}}
+                    {{if eq .PrivateData.IsLogin false}}
                     <li><a href="/login" class="log">Login</a></li>
                     <li><a href="/register" class="reg">Register</a></li>
                     {{else}}
-                    <li><h>Welcome {{.PrivateData.AuthName}}</h></li>
+                    <li><h>Welcome {{.PrivateData.AuthData.Name}}</h></li>
                     <li><a href="/logout" class="reg">Logout</a></li>
                     {{end}}
                 </ul>

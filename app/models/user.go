@@ -81,8 +81,10 @@ func Login(res http.ResponseWriter, req *http.Request) (result bool, error_msg s
 	hashEmail, _ := bcrypt.GenerateFromPassword([]byte(email), bcrypt.DefaultCost)
 	_, err = db.Exec("Update users set token = ? where id = ?", hashEmail, idDb)
 	dataAuth := map[string]string{
-		"name":  nameDb,
-		"token": string(hashEmail),
+		"Id":    idDb,
+		"Email": dbEmail,
+		"Name":  nameDb,
+		"Token": string(hashEmail),
 	}
 	authJson, _ := json.Marshal(dataAuth)
 	helper.SetSession("AuthSession", string(authJson), res)
@@ -94,7 +96,7 @@ func CheckLoginWithSession(session string) bool {
 	var count int
 	var authJson = make(map[string]string)
 	err := json.Unmarshal([]byte(session), &authJson)
-	token := string(authJson["token"])
+	token := string(authJson["Token"])
 	if err != nil || token == "" {
 		return false
 	}
