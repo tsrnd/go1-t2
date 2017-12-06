@@ -1,6 +1,7 @@
 package views
 
 import (
+	"fmt"
 	"goweb2/app/models"
 	"html/template"
 	"log"
@@ -55,7 +56,7 @@ type Page struct {
 	Layout   string
 }
 
-func (self *Page) Render(w http.ResponseWriter, r *http.Request, data interface{}) error {
+func (self *Page) Render(w http.ResponseWriter, r *http.Request, data interface{}) (a error) {
 
 	sessionData := map[string]interface{}{
 		"AuthData": models.GetAuth(r),
@@ -64,5 +65,10 @@ func (self *Page) Render(w http.ResponseWriter, r *http.Request, data interface{
 		"Data":        data,
 		"PrivateData": sessionData,
 	}
-	return self.Template.ExecuteTemplate(w, self.Layout, result)
+	fmt.Println(result)
+	if err := self.Template.ExecuteTemplate(w, self.Layout, result); err != nil {
+		log.Printf("Failed to execute template: %v", err)
+	}
+	return a
+	// return self.Template.ExecuteTemplate(w, self.Layout, result)
 }

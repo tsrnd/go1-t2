@@ -4,7 +4,6 @@
       <div class="checkout-page">
         <div class="checkout-steps">
             <div class="step-description">
-              {{if eq .Status false}}
               <form method="POST" action="/register">
                 <div class="row">
                   <div class="col-md-6 col-sm-6">
@@ -12,11 +11,7 @@
                       <h5>
                         Your Persional Details
                       </h5>
-                      {{if ne .Messeage ""}}
-                        <div class="alert alert-danger">
-                          {{.Messeage}}
-                        </div>
-                      {{end}}
+                      
                       <div class="form-row">
                         <label class="lebel-abs">
                           Full Name 
@@ -71,18 +66,7 @@
                   </div>
                 </div>
               </form>
-              {{else}}
-                <div class="panel panel-success">
-                  <div class="panel-heading">Redirect to Home page after 5 seconds ...</div>
-                  <div class="panel-body">
-                      Register success!
-                  </div>
-                </div>
-                <script>
-                   var delay = 5000; 
-                    setTimeout(function(){ window.location = "/"; }, delay);
-                </script>
-              {{end}}
+             
             </div>
         </div>
       </div>
