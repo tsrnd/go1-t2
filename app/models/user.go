@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"goweb2/helper"
 	"html"
 	"net/http"
@@ -13,13 +14,16 @@ import (
 )
 
 type User struct {
-	id         uint
-	name       string
-	email      string
-	phone      string
-	created_at time.Time
-	updated_at time.Time
+	Id         string
+	Name       string
+	Email      string
+	Phone      string
+	Token      string
+	Created_at time.Time
+	Updated_at time.Time
 }
+
+var CurrentUser User
 
 const _EXP_EMAIL = `^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`
 
@@ -69,7 +73,7 @@ func Login(res http.ResponseWriter, req *http.Request) (result bool, error_msg s
 	if !rxEmail.MatchString(email) {
 		return false, "The email must be a valid email address."
 	}
-	var dbEmail, dbPassword, idDb, nameDb string
+	var dbEmail, dbPassword, nameDb, idDb string
 	err := db.QueryRow("Select id, name, email, password from users where email =?", email).Scan(&idDb, &nameDb, &dbEmail, &dbPassword)
 	if err != nil {
 		return false, "Email not exists!"
@@ -109,6 +113,33 @@ func CheckLoginWithSession(session string) bool {
 
 }
 
-// func Logout(res http.ResponseWriter, req *http.Request) {
-// 	helper.ClearSession("AuthSession", res)
-// }
+func CheckAuth(r *http.Request) bool {
+	authSS := helper.GetSession("AuthSession", r)
+	if authSS != "" {
+		return CheckLoginWithSession(authSS)
+	}
+	return false
+}
+
+func (auth User) IsLogin() bool {
+	if auth.Id != "" {
+		return true
+	}
+	return false
+}
+
+func GetAuth(r *http.Request) User {
+	authData := User{}
+	authSS := helper.GetSession("AuthSession", r)
+	var authJson = make(map[string]string)
+	err := json.Unmarshal([]byte(authSS), &authJson)
+	if err != nil {
+		fmt.Println("Helper View: GetAuther", err)
+	} else {
+		authData.Id = authJson["Id"]
+		authData.Name = authJson["Name"]
+		authData.Email = authJson["Email"]
+		authData.Token = authJson["Token"]
+	}
+	return authData
+}

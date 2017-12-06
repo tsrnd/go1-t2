@@ -4,14 +4,12 @@ import (
 	"html/template"
 	"log"
 	"path/filepath"
-
-	"goweb2/helper"
 )
 
 // It returns the number of bytes written and any write error encountered.
 type CartsView struct {
-	helper.View
-	Feed helper.Page
+	View
+	Feed Page
 }
 
 var Carts CartsView
@@ -22,14 +20,14 @@ func CartsFiles() []string {
 	if err != nil {
 		log.Panic(err)
 	}
-	files = append(files, helper.LayoutFiles()...)
-	files = append(files, helper.LayoutFilesIncludes()...)
+	files = append(files, LayoutFiles()...)
+	files = append(files, LayoutFilesIncludes()...)
 	return files
 }
 
 func init() {
 	indexFiles := append(CartsFiles(), "templates/carts/index.html")
-	Carts.Index = helper.Page{
+	Carts.Index = Page{
 		Template: template.Must(template.New("index").ParseFiles(indexFiles...)),
 		Layout:   "my_layout",
 	}

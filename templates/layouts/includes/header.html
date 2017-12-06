@@ -40,7 +40,7 @@
               </div>
               <div class="col-md-3">
                 <ul class="usermenu">
-                    {{if eq .PrivateData.IsLogin false}}
+                    {{if eq .PrivateData.AuthData.IsLogin false}}
                     <li><a href="/login" class="log">Login</a></li>
                     <li><a href="/register" class="reg">Register</a></li>
                     {{else}}
