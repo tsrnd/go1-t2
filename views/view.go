@@ -1,8 +1,7 @@
-package helper
+package views
 
 import (
-	"encoding/json"
-	"fmt"
+	"goweb2/app/models"
 	"html/template"
 	"log"
 	"net/http"
@@ -41,7 +40,6 @@ func LayoutAdminFilesIncludes() []string {
 	return filesInc
 }
 
-
 type View struct {
 	Index  Page
 	Show   Page
@@ -57,27 +55,14 @@ type Page struct {
 	Layout   string
 }
 
-func GetAuth(r *http.Request) map[string]string {
-	authSS := GetSession("AuthSession", r)
-	var authJson = make(map[string]string)
-	err := json.Unmarshal([]byte(authSS), &authJson)
-	if err != nil {
-		fmt.Println("Helper View: GetAuther", err)
-	}
-	return authJson
-}
-
 func (self *Page) Render(w http.ResponseWriter, r *http.Request, data interface{}) error {
 
-	authSession := GetAuth(r)
-	// fmt.Println(len(authSession))
-	sessionData := map[string]string{
-		"AuthName": authSession["name"],
+	sessionData := map[string]interface{}{
+		"AuthData": models.GetAuth(r),
 	}
 	result := map[string]interface{}{
 		"Data":        data,
 		"PrivateData": sessionData,
 	}
-	// fmt.Println(result)
 	return self.Template.ExecuteTemplate(w, self.Layout, result)
 }

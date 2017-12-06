@@ -4,13 +4,11 @@ import (
 	"html/template"
 	"log"
 	"path/filepath"
-
-	"goweb2/helper"
 )
 
 type HomesView struct {
-	helper.View
-	Feed helper.Page
+	View
+	Feed Page
 }
 
 var Homes HomesView
@@ -20,14 +18,14 @@ func HomesFiles() []string {
 	if err != nil {
 		log.Panic(err)
 	}
-	files = append(files, helper.LayoutFiles()...)
-	files = append(files, helper.LayoutFilesIncludes()...)
+	files = append(files, LayoutFiles()...)
+	files = append(files, LayoutFilesIncludes()...)
 	return files
 }
 
 func init() {
 	indexFiles := append(HomesFiles(), "templates/homes/index.html")
-	Homes.Index = helper.Page{
+	Homes.Index = Page{
 		Template: template.Must(template.New("index").ParseFiles(indexFiles...)),
 		Layout:   "my_layout",
 	}
