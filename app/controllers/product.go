@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"encoding/gob"
 	"goweb2/app/models"
 	"goweb2/helper"
 	"goweb2/views"
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -17,21 +17,19 @@ type ProductController struct {
 var Product ProductController
 
 func (self ProductController) Show(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
-	// show cart
-	session, err := store.Get(r, "carts")
-	gob.Register(&Orders{})
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return nil
-	}
-	oderId := session.Values["orders"]
-	listCart, _ := models.ShowCart(oderId)
 	id := ps.ByName("id")
 	product, err := models.ShowProduct(id)
 	if err != nil {
 
 		return err
 	}
+	orderId := helper.GetSession("order", r)
+
+	if orderId == "" {
+		return nil
+	}
+	orderIdInt, _ := strconv.ParseInt(orderId, 10, 32)
+	listCart, _ := models.ShowOrder(orderIdInt)
 	compact := map[string]interface{}{
 		"Title":   "THIS IS PRODUCT DETAIL PAGE!",
 		"Product": product,

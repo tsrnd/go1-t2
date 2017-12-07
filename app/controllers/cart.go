@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"encoding/gob"
 	"encoding/json"
 	"fmt"
 	"goweb2/app/models"
@@ -35,46 +34,32 @@ var store = sessions.NewCookieStore([]byte("secret-password"))
 
 // list cart
 func (self CartController) Index(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
-	session, err := store.Get(r, "carts")
-	gob.Register(&Orders{})
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return nil
-	}
-	if session.Values["orders"] == nil {
-		orderId, _ := models.InsertOrder()
-		session.Values["orders"] = orderId
-		session.Save(r, w)
-	}
-	id := session.Values["orders"]
-	// cartDetailId, _ := models.InsertCartDetail(100000, 1, 1, 3, id)
-	listCart, _ := models.ShowCart(id)
+	CreateOder(w, r)
 	compact := map[string]interface{}{
 		"Title": "THIS IS A CARTS PAGE!",
-		"Data":  listCart,
 		"Url":   helper.BaseUrl(),
 	}
 	// fmt.Println("cart id", cartDetailId)
 	return views.Carts.Index.Render(w, r, compact)
-}
 
+}
+func CreateOder(w http.ResponseWriter, r *http.Request) int64 {
+	order := helper.GetSession("order", r)
+	if order == "" {
+		newOrder, _ := models.InsertOrder()
+		helper.SetSession("order", strconv.Itoa(int(newOrder)), w)
+		return newOrder
+	}
+	orderId, _ := strconv.ParseInt(order, 10, 32)
+	return orderId
+}
 func (self CartController) Store(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if r.Method == "POST" {
-		session, err := store.Get(r, "carts")
-		gob.Register(&Orders{})
-		if err != nil {
-			http.Redirect(w, r, helper.BaseUrl(), http.StatusSeeOther)
-		}
-		if session.Values["orders"] == nil {
-			orderId, _ := models.InsertOrder()
-			session.Values["orders"] = orderId
-			session.Save(r, w)
-		}
-		idOrder := session.Values["orders"]
+		order := CreateOder(w, r)
 		price, _ := strconv.ParseFloat(r.FormValue("price"), 64)
 		quantity, _ := strconv.Atoi(r.FormValue("quantity"))
-		IdProduct, _ := strconv.Atoi(r.FormValue("product_id"))
-		cartDetailId, _ := models.InsertCartDetail(price, quantity, 1, IdProduct, idOrder)
+		idProduct, _ := strconv.ParseInt(r.FormValue("product_id"), 10, 32)
+		cartDetailId, _ := models.InsertCartDetail(price, quantity, 1, idProduct, order)
 		fmt.Println("add", cartDetailId)
 		http.Redirect(w, r, helper.Url("carts"), http.StatusSeeOther)
 	} else {
@@ -84,18 +69,17 @@ func (self CartController) Store(w http.ResponseWriter, r *http.Request, ps http
 
 func (self CartController) Delete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if r.Method == "POST" {
-		session, _ := store.Get(r, "carts")
-		orderId := session.Values["orders"]
+		order := helper.GetSession("order", r)
 		w.Header().Set("Content-Type", "application/json")
 		ajax := StatusAjax{1}
-		if orderId == nil {
+		if order == "" {
 			ajax = StatusAjax{0}
 			js, _ := json.Marshal(ajax)
 			w.Write(js)
 		} else {
 			detailCartId := r.FormValue("detailCartId")
-			cartDetailId, _ := strconv.Atoi(detailCartId)
-			result, _ := models.Remove(orderId, cartDetailId)
+			cartDetailId, _ := strconv.ParseInt(detailCartId, 10, 32)
+			result, _ := models.Remove(cartDetailId)
 			if result == 0 {
 				ajax = StatusAjax{0}
 				js, _ := json.Marshal(ajax)
@@ -115,17 +99,16 @@ func (self CartController) Delete(w http.ResponseWriter, r *http.Request, ps htt
 }
 func (self CartController) Update(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if r.Method == "POST" {
-		session, _ := store.Get(r, "carts")
-		orderId := session.Values["orders"]
+		orderId := helper.GetSession("order", r)
 		w.Header().Set("Content-Type", "application/json")
 		ajax := StatusAjax{1}
-		if orderId == nil {
+		if orderId == "" {
 			ajax = StatusAjax{0}
 			js, _ := json.Marshal(ajax)
 			w.Write(js)
 		} else {
 			detailCartId := r.FormValue("detailCartId")
-			cartDetailId, _ := strconv.Atoi(detailCartId)
+			cartDetailId, _ := strconv.ParseInt(detailCartId, 10, 32)
 			quantity, _ := strconv.Atoi(r.FormValue("quantity"))
 			totalPrice, _ := strconv.ParseFloat(r.FormValue("totalPrice"), 64)
 			result, _ := models.Update(cartDetailId, quantity, totalPrice)

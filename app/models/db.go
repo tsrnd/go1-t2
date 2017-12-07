@@ -1,14 +1,14 @@
 package models
 
 import (
-	"database/sql"
 	"fmt"
 	"os"
 
-	_ "github.com/lib/pq"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-var db *sql.DB
+var db *gorm.DB
 
 func ConnectDB() {
 	var err error
@@ -22,12 +22,14 @@ func ConnectDB() {
 		address = fmt.Sprintf("host=%s port=%d ", host, port)
 	}
 	//dsn
-	dsn := fmt.Sprintf("%s user=%s password=%s dbname=%s sslmode=disable", address, os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_DATABASE"))
+	dsn := fmt.Sprintf("%s user='%s' password='%s' dbname=%s sslmode=disable", address, os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_DATABASE"))
 	dsn = "host=localhost port=5432 user=thinhnguyenv. " +
-		"password= dbname=goweb2 sslmode=disable"
+		"password='' dbname=golang2 sslmode=disable"
 	//open a database connection
-	db, err = sql.Open("postgres", dsn)
+	db, err = gorm.Open("postgres", dsn)
+
 	if err != nil {
 		panic(err.Error())
 	}
+
 }

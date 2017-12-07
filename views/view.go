@@ -1,12 +1,13 @@
 package views
 
 import (
-	"fmt"
 	"goweb2/app/models"
+	"goweb2/helper"
 	"html/template"
 	"log"
 	"net/http"
 	"path/filepath"
+	"strconv"
 )
 
 func LayoutFiles() []string {
@@ -60,15 +61,29 @@ func (self *Page) Render(w http.ResponseWriter, r *http.Request, data interface{
 
 	sessionData := map[string]interface{}{
 		"AuthData": models.GetAuth(r),
+		"Cart":     GetCart(r),
 	}
 	result := map[string]interface{}{
 		"Data":        data,
 		"PrivateData": sessionData,
 	}
-	fmt.Println(result)
 	if err := self.Template.ExecuteTemplate(w, self.Layout, result); err != nil {
 		log.Printf("Failed to execute template: %v", err)
 	}
 	return a
 	// return self.Template.ExecuteTemplate(w, self.Layout, result)
+}
+
+func GetCart(r *http.Request) interface{} {
+	orderId := helper.GetSession("order", r)
+
+	if orderId == "" {
+		return nil
+	}
+	id, _ := strconv.ParseInt(orderId, 10, 32)
+	listCart, _ := models.ShowOrder(id)
+	if listCart == nil {
+		return nil
+	}
+	return listCart
 }

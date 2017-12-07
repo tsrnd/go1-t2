@@ -8,6 +8,10 @@ import (
 	"github.com/gorilla/sessions"
 )
 
+type Orders struct {
+	IdProduct int64
+}
+
 var cookieHandler = securecookie.New(
 	// securecookie.GenerateRandomKey(64),
 	// securecookie.GenerateRandomKey(32),
@@ -15,7 +19,7 @@ var cookieHandler = securecookie.New(
 	[]byte("1234567890123456"),
 )
 var keyFlash string = "flash-session"
-var store = sessions.NewCookieStore([]byte("golang2-secret-string"))
+var store = sessions.NewCookieStore([]byte("secret-password"))
 
 func SetFlash(value interface{}, w http.ResponseWriter, req *http.Request) bool {
 	session, err := store.Get(req, keyFlash)
