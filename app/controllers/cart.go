@@ -45,8 +45,10 @@ func (self CartController) Index(w http.ResponseWriter, r *http.Request, ps http
 }
 func CreateOder(w http.ResponseWriter, r *http.Request) int64 {
 	order := helper.GetSession("order", r)
-	if order == "" {
+	fmt.Println("Check order:", order)
+	if order == "" || order == "0" {
 		newOrder, _ := models.InsertOrder()
+		fmt.Println("create order:", newOrder)
 		helper.SetSession("order", strconv.Itoa(int(newOrder)), w)
 		return newOrder
 	}

@@ -45,7 +45,7 @@ func StoreUser(req *http.Request) (result bool, error_msg string) {
 		return false, "The password confirmation does not match."
 	}
 	var existsUser User
-	res := db.Select("email").Where("email = ?", email).First(&existsUser)
+	db.Select("email").Where("email = ?", email).First(&existsUser)
 	if existsUser.Email != "" {
 		return false, "Email has exists"
 	}
@@ -70,9 +70,8 @@ func Login(res http.ResponseWriter, req *http.Request) (bool, string) {
 	}
 	var user User
 	result := db.Where("email = ?", email).First(&user)
-
 	// err := db.QueryRow("Select id, name, email, password from users where email =?", email).Scan(&idDb, &nameDb, &dbEmail, &dbPassword)
-	if result != nil || bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
+	if result.Error != nil || bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
 		return false, "Login fail"
 	}
 	user.Token = user.Password

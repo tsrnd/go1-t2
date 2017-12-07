@@ -60,7 +60,6 @@ func (self UserController) Login(w http.ResponseWriter, r *http.Request, ps http
 		http.Redirect(w, r, "/login", 302)
 		return a
 	}
-
 	http.Redirect(w, r, "/", 302)
 	return a
 }

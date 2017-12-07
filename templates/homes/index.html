@@ -17,7 +17,7 @@
                                 </div>
                                 <div class="productname">{{ .Name }}</div>
                                 <h4 class="price">${{ .Price }}</h4>
-                                <form method="POST" action="http://localhost:8000/add-to-cart" id="form-{{ .Id }}">
+                                <form method="POST" action="/add-to-cart" id="form-{{ .Id }}">
                                     <div class="form-group">
                                         <input type="hidden" name="quantity" value="1">
                                         <input type="hidden" name="price" value="{{ .Price }}">
@@ -67,7 +67,7 @@
     </div>
 </div>
 <script>
-    var base_url = '{{ .Url }}'
+    var base_url = '/'
     var data = {{.Data}}
 </script>
 {{end}}

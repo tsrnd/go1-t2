@@ -33,10 +33,10 @@ func InsertOrder() (int64, error) {
 	return order.Id, nil
 }
 
-func ShowOrder(idOrder int64) (*Result, error) {
-	var result Result
+func ShowOrder(idOrder int64) ([]Result, error) {
+	var result []Result
 	db.Raw("SELECT cart_details.id, cart_details.price as total_price, cart_details.quantity, products.name, products.image, products.price FROM orders INNER JOIN cart_details ON orders.id=cart_details.order_id INNER JOIN products ON cart_details.product_id=products.id WHERE orders.id=? AND orders.status=? ORDER BY cart_details.id DESC", idOrder).Scan(&result)
-	return &result, nil
+	return result, nil
 }
 
 // insert cart detail

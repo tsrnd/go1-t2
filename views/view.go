@@ -63,6 +63,7 @@ func (self *Page) Render(w http.ResponseWriter, r *http.Request, data interface{
 		"AuthData": models.GetAuth(r),
 		"Cart":     GetCart(r),
 	}
+	// fmt.Println(GetCart(r))
 	result := map[string]interface{}{
 		"Data":        data,
 		"PrivateData": sessionData,

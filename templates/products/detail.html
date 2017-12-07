@@ -1,5 +1,4 @@
 {{define "content"}}
-    {{ range .Product}}
     <div class="container_fullwidth">
         <div class="container">
             <div class="row">
@@ -7,7 +6,7 @@
                     <div class="products-details">
                     <div class="preview_image">
                         <div class="preview-small">
-                            <img id="zoom_03" src="/public/images/product/{{ .Image }}" data-zoom-image="images/products/Large/products-01.jpg" alt="">
+                            <img id="zoom_03" src="/public/images/product/{{ .Product.Image }}" data-zoom-image="images/products/Large/products-01.jpg" alt="">
                         </div>
                         <div class="thum-image">
                             <ul id="gallery_01" class="prev-thum">
@@ -48,7 +47,7 @@
                         </div>
                     </div>
                     <div class="products-description">
-                        <h5 class="name">{{ .Name }}</h5>
+                        <h5 class="name">{{ .Product.Name }}</h5>
                         <p>
                             <img alt="" src="/public/images/star.png">
                             <a class="review_num" href="#">
@@ -62,7 +61,7 @@
                             </span>
                         </p>
                         <p>
-                            {{ .Description }}
+                            {{ .Product.Description }}
                         </p>
                         <hr class="border">
                         <div class="price">
@@ -117,7 +116,7 @@
                         </div>
                         <div class="tab-content-wrap">
                             <div class="tab-content" id="Descraption">
-                                <p>{{ .Description }} </p>
+                                <p>{{ .Product.Description }} </p>
                             </div>
                             <div class="tab-content" id="Reviews">
                                 <form>
@@ -466,9 +465,8 @@
         </div>
     </div>
     <div class="clearfix"></div>
-    {{end}}
+   
     <script>
-        var base_url = '{{ .Url }}'
-        var data = {{.Data}}
+        var base_url = '{{ .Product.Url }}'
     </script>
-{{end}}
+ {{end}}
