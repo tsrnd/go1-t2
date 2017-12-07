@@ -40,9 +40,6 @@ func GetFlash(key string, w http.ResponseWriter, req *http.Request) interface{} 
 	flash := session.Flashes()
 	session.Save(req, w)
 	return flash
-	// // fmt.Println(session.Flashes())
-
-	return false
 }
 
 func SetSession(key string, val string, r http.ResponseWriter) bool {
@@ -69,8 +66,6 @@ func ClearSession(key string, r http.ResponseWriter) {
 }
 
 func GetSession(key string, r *http.Request) string {
-	// fmt.Println(securecookie.GenerateRandomKey(64))
-	// fmt.Println(securecookie.GenerateRandomKey(32))
 	var cookieRes string
 	if cookie, err := r.Cookie(key); err == nil {
 		err := cookieHandler.Decode(key, cookie.Value, &cookieRes)

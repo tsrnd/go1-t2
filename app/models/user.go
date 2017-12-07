@@ -59,20 +59,20 @@ func StoreUser(req *http.Request) (result bool, error_msg string) {
 	return true, "User Created!"
 }
 
-func Login(res http.ResponseWriter, req *http.Request) (bool, string) {
+func Login(res http.ResponseWriter, req *http.Request) (string, string) {
 	email := html.EscapeString(req.FormValue("email"))
 	password := req.FormValue("password")
 	if email == "" || password == "" {
-		return false, "Please inpull all fields"
+		return "", "Please inpull all fields"
 	}
 	if !rxEmail.MatchString(email) {
-		return false, "The email must be a valid email address."
+		return "", "The email must be a valid email address."
 	}
 	var user User
 	result := db.Where("email = ?", email).First(&user)
 	// err := db.QueryRow("Select id, name, email, password from users where email =?", email).Scan(&idDb, &nameDb, &dbEmail, &dbPassword)
 	if result.Error != nil || bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
-		return false, "Login fail"
+		return "", "Login fail"
 	}
 	user.Token = user.Password
 	db.Save(&user)
@@ -84,7 +84,7 @@ func Login(res http.ResponseWriter, req *http.Request) (bool, string) {
 	}
 	authJson, _ := json.Marshal(dataAuth)
 	helper.SetSession("AuthSession", string(authJson), res)
-	return true, ""
+	return user.Id, ""
 }
 
 func CheckLoginWithSession(session string) bool {

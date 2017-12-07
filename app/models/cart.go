@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type CartDetail struct {
 	Id        int64 `gorm:"primary_key"`
@@ -15,7 +17,10 @@ type CartDetail struct {
 // insert cart detail
 func InsertCartDetail(price float64, quantity int, userId int64, productId int64, orderId int64) (int64, error) {
 	var cartDetail CartDetail
-	cartDetail = CartDetail{CreatedAt: time.Now(), Price: price, Quantity: quantity, UserId: userId, ProductId: productId, OrderId: orderId}
+	cartDetail = CartDetail{CreatedAt: time.Now(), Price: price, Quantity: quantity, ProductId: productId, OrderId: orderId}
+	if userId > 0 {
+		cartDetail.UserId = userId
+	}
 	db.Create(&cartDetail)
 	return cartDetail.Id, nil
 }
