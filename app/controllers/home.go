@@ -1,10 +1,12 @@
 package controllers
 
 import (
+	"fmt"
 	"goweb2/app/models"
 	"goweb2/helper"
 	"goweb2/views"
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -27,11 +29,15 @@ func (self HomeController) Index(w http.ResponseWriter, r *http.Request, ps http
 
 		return err
 	}
-
+	order := helper.GetSession("order", r)
+	orderId, _ := strconv.Atoi(order)
+	fmt.Println("idorer", orderId)
+	ShowCart, _ := models.ShowCart(orderId)
 	compact := map[string]interface{}{
 		"Title":    "THIS IS A HOME PAGE!",
 		"Products": products,
 		"Url":      helper.BaseUrl(),
+		"Data":     ShowCart,
 	}
 
 	return views.Homes.Index.Render(w, r, compact)
