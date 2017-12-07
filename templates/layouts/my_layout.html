@@ -19,11 +19,19 @@
 			<div class="header">
 				{{template "header" .}}
 			</div>
-			<div class="clearfix"></div>
+			
 			{{if eq .PrivateData.UrlPath "/"}}
+			<div class="clearfix"></div>
 			<div class="hom-slider">
 				{{template "slider" .Data}}
 			</div>
+			{{else}}
+			<div class="clearfix"></div>
+			<div class="page-index">
+					<div class="container">
+					  <h5>{{.Data.Title}}</h5>
+					</div>
+				  </div>
 			{{end}}
 			<div class="clearfix"></div>
 			<div class="container_fullwidth">
