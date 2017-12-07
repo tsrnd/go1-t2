@@ -2,32 +2,24 @@ package models
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/joho/godotenv"
 )
 
 var db *gorm.DB
 
 func ConnectDB() {
 	var err error
-	address := ""
-	port := "5432"
-	val, ok := os.LookupEnv("DB_PORT")
-	if ok {
-		port = val
+	er := godotenv.Load()
+	if er != nil {
+		log.Fatal("Error loading .env file")
 	}
-	if host, ok := os.LookupEnv("DB_HOST"); ok && host != "" {
-		address = fmt.Sprintf("host=%s port=%d ", host, port)
-	}
-	//dsn
-	dsn := fmt.Sprintf("%s user='%s' password='%s' dbname=%s sslmode=disable", address, os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_DATABASE"))
-	dsn = "host=localhost port=5432 user=thinhnguyenv. " +
-		"password='' dbname=golang2 sslmode=disable"
-	//open a database connection
-	db, err = gorm.Open("postgres", dsn)
-
+	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_DATABASE"))
+	db, err = gorm.Open(os.Getenv("DB_DRIVER"), dsn)
 	if err != nil {
 		panic(err.Error())
 	}
