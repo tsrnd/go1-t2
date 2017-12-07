@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -29,12 +30,17 @@ type Order struct {
 
 // insert cart detail
 func InsertCartDetail(price float64, quantity int, userId int64, productId int64, orderId int64) (int64, error) {
-	id, quantityOld, priceOld := checkProductExitsOnCart(productId)
+	id, quantityOld, priceOld := checkProductExitsOnCart(productId, orderId)
+	fmt.Println("id", id)
+	fmt.Println("product", productId)
 	if id > 0 {
 		return Update(id, quantity+quantityOld, price+priceOld)
 	}
 	var cartDetail CartDetail
-	cartDetail = CartDetail{CreatedAt: time.Now(), Price: price, Quantity: quantity, UserId: userId, ProductId: productId, OrderId: orderId}
+	cartDetail = CartDetail{CreatedAt: time.Now(), Price: price, Quantity: quantity, ProductId: productId, OrderId: orderId}
+	if userId > 0 {
+		cartDetail.UserId = userId
+	}
 	db.Create(&cartDetail)
 	return cartDetail.Id, nil
 }
@@ -80,8 +86,9 @@ func Update(cartDetailId int64, quantity int, price float64) (int64, error) {
 }
 
 // check product exits cart
-func checkProductExitsOnCart(idProduct int64) (int64, int, float64) {
+func checkProductExitsOnCart(idProduct int64, idOrder int64) (int64, int, float64) {
 	var cartDetail CartDetail
-	db.Where(&CartDetail{ProductId: idProduct}).First(&cartDetail)
+	// fmt.Println("sql", db.Where(&CartDetail{ProductId: idProduct}).First(&cartDetail))
+	db.Where("cart_details.product_id = ? AND orders.status = ? AND cart_details.order_id", idProduct, 0, idOrder).Joins("JOIN orders ON orders.id=cart_details.order_id").Find(&cartDetail)
 	return cartDetail.Id, cartDetail.Quantity, cartDetail.Price
 }

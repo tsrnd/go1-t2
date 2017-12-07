@@ -58,12 +58,11 @@ type Page struct {
 }
 
 func (self *Page) Render(w http.ResponseWriter, r *http.Request, data interface{}) (a error) {
-
 	sessionData := map[string]interface{}{
 		"AuthData": models.GetAuth(r),
 		"Cart":     GetCart(r),
+		"UrlPath":  r.URL.Path,
 	}
-	// fmt.Println(GetCart(r))
 	result := map[string]interface{}{
 		"Data":        data,
 		"PrivateData": sessionData,

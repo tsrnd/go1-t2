@@ -19,7 +19,6 @@ var Product ProductController
 
 func (self ProductController) Show(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
 	id := ps.ByName("id")
-	fmt.Println("444234234234")
 	product, err := models.ShowProduct(id)
 	if err != nil {
 		return err

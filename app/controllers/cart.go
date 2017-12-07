@@ -42,16 +42,15 @@ func (self CartController) Index(w http.ResponseWriter, r *http.Request, ps http
 		"Url":   helper.BaseUrl(),
 		"Data":  listCart,
 	}
-	// fmt.Println("cart id", cartDetailId)
 	return views.Carts.Index.Render(w, r, compact)
 
 }
 func CreateOder(w http.ResponseWriter, r *http.Request) int64 {
 	order := helper.GetSession("order", r)
-	fmt.Println("Check order:", order)
 	if order == "" || order == "0" {
-		newOrder, _ := models.InsertOrder()
-		fmt.Println("create order:", newOrder)
+		auth := models.GetAuth(r)
+		userId, _ := strconv.ParseInt(auth.Id, 10, 32)
+		newOrder, _ := models.InsertOrder(userId)
 		helper.SetSession("order", strconv.Itoa(int(newOrder)), w)
 		return newOrder
 	}
@@ -64,8 +63,7 @@ func (self CartController) Store(w http.ResponseWriter, r *http.Request, ps http
 		price, _ := strconv.ParseFloat(r.FormValue("price"), 64)
 		quantity, _ := strconv.Atoi(r.FormValue("quantity"))
 		idProduct, _ := strconv.ParseInt(r.FormValue("product_id"), 10, 32)
-		cartDetailId, _ := models.InsertCartDetail(price, quantity, 1, idProduct, order)
-		fmt.Println("add", cartDetailId)
+		models.InsertCartDetail(price, quantity, 1, idProduct, order)
 		http.Redirect(w, r, helper.Url("carts"), http.StatusSeeOther)
 	} else {
 		http.Redirect(w, r, helper.BaseUrl(), http.StatusSeeOther)

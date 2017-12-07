@@ -2,34 +2,52 @@
 
 
 [[projects]]
-  branch = "master"
   name = "github.com/go-sql-driver/mysql"
   packages = ["."]
-  revision = "9181e3a86a19bacd63e68d43ae8b7b36320d8092"
+  revision = "a0583e0143b1624142adab07e0e97fe106d99561"
+  version = "v1.3"
 
 [[projects]]
-  branch = "master"
   name = "github.com/gorilla/context"
   packages = ["."]
-  revision = "08b5f424b9271eedf6f9f0ce86cb9396ed337a42"
+  revision = "1ea25387ff6f684839d82767c1733ff4d4d15d0a"
+  version = "v1.1"
 
 [[projects]]
-  branch = "master"
   name = "github.com/gorilla/securecookie"
   packages = ["."]
-  revision = "e59506cc896acb7f7bf732d4fdf5e25f7ccd8983"
+  revision = "667fe4e3466a040b780561fe9b51a83a3753eefc"
+  version = "v1.1"
 
 [[projects]]
-  branch = "master"
   name = "github.com/gorilla/sessions"
   packages = ["."]
-  revision = "a3acf13e802c358d65f249324d14ed24aac11370"
+  revision = "ca9ada44574153444b00d3fd9c8559e4cc95f896"
+  version = "v1.1"
+
+[[projects]]
+  name = "github.com/jinzhu/gorm"
+  packages = [".","dialects/postgres"]
+  revision = "5174cc5c242a728b435ea2be8a2f7f998e15429b"
+  version = "v1.0"
 
 [[projects]]
   branch = "master"
+  name = "github.com/jinzhu/inflection"
+  packages = ["."]
+  revision = "1c35d901db3da928c72a72d8458480cc9ade058f"
+
+[[projects]]
   name = "github.com/julienschmidt/httprouter"
   packages = ["."]
-  revision = "e1b9828bc9e5904baec057a154c09ca40fe7fae0"
+  revision = "8c199fb6259ffc1af525cc3ad52ee60ba8359669"
+  version = "v1.1"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/lib/pq"
+  packages = [".","hstore","oid"]
+  revision = "83612a56d3dd153a94a629cd64925371c9adad78"
 
 [[projects]]
   branch = "master"
@@ -37,15 +55,9 @@
   packages = ["bcrypt","blowfish"]
   revision = "94eea52f7b742c7cbe0b03b22f0c4c8631ece122"
 
-[[projects]]
-  name = "google.golang.org/appengine"
-  packages = ["cloudsql"]
-  revision = "150dc57a1b433e64154302bdc40b6bb8aefa313a"
-  version = "v1.0.0"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "fcc63941acb3e5ba77af94b675c23ee04f20f9e168f648fd10cbb8134c6c7ef1"
+  inputs-digest = "6edd020d22c4ff3444709f9bf9f89d2d8ea4d233053e3cffdb46076fc169b049"
   solver-name = "gps-cdcl"
   solver-version = 1
