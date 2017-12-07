@@ -1,7 +1,6 @@
 package models
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"goweb2/helper"
@@ -17,10 +16,11 @@ type User struct {
 	Id         string
 	Name       string
 	Email      string
+	Password   string
 	Phone      string
-	Token      string
-	Created_at time.Time
-	Updated_at time.Time
+	Token      string    `gorm:"default:null"`
+	Created_at time.Time `gorm:"default:null"`
+	Updated_at time.Time `gorm:"default:null"`
 }
 
 var CurrentUser User
@@ -44,69 +44,60 @@ func StoreUser(req *http.Request) (result bool, error_msg string) {
 	if password != passwordConf {
 		return false, "The password confirmation does not match."
 	}
-	// db, _ := database.ConnectDB()
-	var existsUser string
-	err := db.QueryRow("SELECT name FROM users WHERE email=?", email).Scan(&existsUser)
-	switch {
-	// Username is available
-	case err == sql.ErrNoRows:
-		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-
-		_, err = db.Exec("INSERT INTO users(name, email, password, phone) VALUES(?, ?, ?, ?)", fullName, email, hashedPassword, telephone)
-		if err != nil {
-			return false, "Server error, unable to create your account"
-		}
-		return true, "User Created!"
-	case err != nil:
-		return false, "Server error, unable to create your account."
-	default:
-		return true, "User Created!"
+	var existsUser User
+	db.Select("email").Where("email = ?", email).First(&existsUser)
+	if existsUser.Email != "" {
+		return false, "Email has exists"
 	}
+
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	var user = User{Name: fullName, Email: email, Phone: telephone, Password: string(hashedPassword)}
+	creat := db.Create(&user)
+	if creat.Error != nil {
+		return false, "Server error, unable to create your account"
+	}
+	return true, "User Created!"
 }
 
-func Login(res http.ResponseWriter, req *http.Request) (result bool, error_msg string) {
+func Login(res http.ResponseWriter, req *http.Request) (string, string) {
 	email := html.EscapeString(req.FormValue("email"))
 	password := req.FormValue("password")
 	if email == "" || password == "" {
-		return false, "Please inpull all fields"
+		return "", "Please inpull all fields"
 	}
 	if !rxEmail.MatchString(email) {
-		return false, "The email must be a valid email address."
+		return "", "The email must be a valid email address."
 	}
-	var dbEmail, dbPassword, nameDb, idDb string
-	err := db.QueryRow("Select id, name, email, password from users where email =?", email).Scan(&idDb, &nameDb, &dbEmail, &dbPassword)
-	if err != nil {
-		return false, "Email not exists!"
+	var user User
+	result := db.Where("email = ?", email).First(&user)
+	// err := db.QueryRow("Select id, name, email, password from users where email =?", email).Scan(&idDb, &nameDb, &dbEmail, &dbPassword)
+	if result.Error != nil || bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
+		return "", "Login fail"
 	}
-	err = bcrypt.CompareHashAndPassword([]byte(dbPassword), []byte(password))
-	if err != nil {
-		return false, "Password incorect!"
-	}
-	hashEmail, _ := bcrypt.GenerateFromPassword([]byte(email), bcrypt.DefaultCost)
-	_, err = db.Exec("Update users set token = ? where id = ?", hashEmail, idDb)
+	user.Token = user.Password
+	db.Save(&user)
 	dataAuth := map[string]string{
-		"Id":    idDb,
-		"Email": dbEmail,
-		"Name":  nameDb,
-		"Token": string(hashEmail),
+		"Id":    user.Id,
+		"Email": user.Email,
+		"Name":  user.Name,
+		"Token": user.Token,
 	}
 	authJson, _ := json.Marshal(dataAuth)
 	helper.SetSession("AuthSession", string(authJson), res)
-	return true, ""
+	return user.Id, ""
 }
 
 func CheckLoginWithSession(session string) bool {
 
-	var count int
 	var authJson = make(map[string]string)
+	var user User
 	err := json.Unmarshal([]byte(session), &authJson)
 	token := string(authJson["Token"])
 	if err != nil || token == "" {
 		return false
 	}
-
-	err = db.QueryRow("Select count(id) from users where token =?", token).Scan(&count)
-	if err == nil && count > 0 {
+	result := db.Where("token = ?", token).First(&user)
+	if result.Error == nil && user.Name != "" {
 		return true
 	}
 	return false

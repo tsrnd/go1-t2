@@ -5,6 +5,7 @@ import (
 	"goweb2/helper"
 	"goweb2/views"
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -55,12 +56,18 @@ func (self UserController) ShowContactPage(w http.ResponseWriter, r *http.Reques
 }
 
 func (self UserController) Login(w http.ResponseWriter, r *http.Request, ps httprouter.Params) (a error) {
-	if ok, errMsg := models.Login(w, r); ok == false {
+	ok, errMsg := models.Login(w, r)
+	if errMsg != "" {
 		helper.SetFlash(errMsg, w, r)
 		http.Redirect(w, r, "/login", 302)
 		return a
 	}
-
+	orderId := helper.GetSession("order", r)
+	if orderId != "" && orderId != "0" {
+		id, _ := strconv.ParseInt(orderId, 10, 32)
+		userId, _ := strconv.ParseInt(ok, 10, 32)
+		models.SetCurrentOrder(id, userId)
+	}
 	http.Redirect(w, r, "/", 302)
 	return a
 }
