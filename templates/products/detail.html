@@ -67,7 +67,7 @@
                         <div class="price">
                         Price : 
                             <span class="new_price">
-                                {{ .Price }}
+                                {{ .Product.Price }}
                                 <sup>$</sup>
                             </span>
                             <span class="old_price">
@@ -81,8 +81,8 @@
                             <div class="qty">
                                 Qty &nbsp;&nbsp;: 
                                 <input type="number" name="quantity" value="1" style="width:30%">
-                                <input type="hidden" name="price" value="{{ .Price }}">
-                                <input type="hidden" name="product_id" value="{{ .Id }}">                                                                
+                                <input type="hidden" name="price" value="{{ .Product.Price }}">
+                                <input type="hidden" name="product_id" value="{{ .Product.Id }}">                                                                
                             </div>
                             <div class="button_group">
                                 <button class="button" >Add To Cart</button>
@@ -467,6 +467,7 @@
     <div class="clearfix"></div>
    
     <script>
-        var base_url = '{{ .Product.Url }}'
+        var base_url = '{{ .Url }}'
+        var data = {{ .Data }}
     </script>
  {{end}}

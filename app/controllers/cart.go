@@ -34,13 +34,9 @@ var store = sessions.NewCookieStore([]byte("secret-password"))
 
 // list cart
 func (self CartController) Index(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
-	CreateOder(w, r)
-	orderId := helper.GetSession("order", r)
-	id, _ := strconv.ParseInt(orderId, 10, 32)
-	listCart, _ := models.ShowOrder(id)
-	if listCart == nil {
-		listCart = nil
-	}
+	order := helper.GetSession("order", r)
+	orderId, _ := strconv.Atoi(order)
+	listCart, _ := models.ShowCart(orderId)
 	compact := map[string]interface{}{
 		"Title": "THIS IS A CARTS PAGE!",
 		"Url":   helper.BaseUrl(),
@@ -67,7 +63,7 @@ func (self CartController) Store(w http.ResponseWriter, r *http.Request, ps http
 		price, _ := strconv.ParseFloat(r.FormValue("price"), 64)
 		quantity, _ := strconv.Atoi(r.FormValue("quantity"))
 		idProduct, _ := strconv.ParseInt(r.FormValue("product_id"), 10, 32)
-		models.InsertCartDetail(price, quantity, 14, idProduct, order)
+		models.InsertCartDetail(price, quantity, 1, idProduct, order)
 		http.Redirect(w, r, helper.Url("carts"), http.StatusSeeOther)
 	} else {
 		http.Redirect(w, r, helper.BaseUrl(), http.StatusSeeOther)

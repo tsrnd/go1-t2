@@ -60,7 +60,7 @@
               <li class="option-cart">
                 <a href="#" class="cart-icon">cart <span class="cart_no" id="count-cart">02</span></a>
                 <ul class="option-cart-item">
-                    {{ range .PrivateData.Cart }}
+                    {{ range .Data.Data }}
                     <li class="remove-{{ .CartDetailId }}">
                       <div class="cart-item">
                           <div class="image"><img src="/public/images/product/{{ .Image }}" alt=""></div>
