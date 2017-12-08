@@ -1,4 +1,4 @@
-package frontend
+package baseController
 
 import (
    "github.com/astaxie/beego"

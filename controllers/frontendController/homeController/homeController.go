@@ -1,14 +1,14 @@
-package controllers
+package homeController
 
 import (
-	"goweb2/controllers/base/frontend"
+	"goweb2/controllers/frontendController/baseController"
 )
 
 type HomeController struct {
-	frontend.FrontendLayout
+	baseController.FrontendLayout
 }
 
-func (c *HomeController) Get() {
+func (c *HomeController) Index() {
 	c.TplName = "frontend/templates/home/content.tpl"
 	c.Content()
 }
