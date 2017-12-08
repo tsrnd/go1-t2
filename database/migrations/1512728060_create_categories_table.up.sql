@@ -1,0 +1,9 @@
+CREATE SEQUENCE categories_seq;
+
+CREATE TABLE IF NOT EXISTS categories (
+  id INT NOT NULL DEFAULT NEXTVAL ('categories_seq'),
+  name VARCHAR(45) NULL DEFAULT NULL,
+  created_at TIMESTAMP(0) NULL DEFAULT NULL,
+  updated_at TIMESTAMP(0) NULL DEFAULT NULL,
+  PRIMARY KEY (id))
+;

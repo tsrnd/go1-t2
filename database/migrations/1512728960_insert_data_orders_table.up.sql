@@ -1,0 +1,2 @@
+INSERT INTO orders (total_price, status, address, user_id, created_at, updated_at) 
+VALUES (15.04*3 + 15.14*2 + 20.04*4, 0, '132, My Street, Kingston, New York 12401 United States', 1, current_timestamp, current_timestamp);

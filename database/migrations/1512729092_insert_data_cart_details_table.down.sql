@@ -1,0 +1,1 @@
+TRUNCATE cart_details CASCADE;
