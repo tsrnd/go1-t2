@@ -1,11 +1,11 @@
 package main
 
 import (
-	"goweb2/app/models"
-	"goweb2/routes"
+	_ "goweb2/routers"
+	"github.com/astaxie/beego"
 )
 
 func main() {
-	models.ConnectDB()
-	routes.Route()
+	beego.Run()
 }
+
