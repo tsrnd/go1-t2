@@ -84,3 +84,4 @@ $RECYCLE.BIN/
 
 /bin
 /vendor
+.env
