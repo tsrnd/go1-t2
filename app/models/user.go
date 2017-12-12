@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"goweb2/helper"
@@ -18,9 +19,9 @@ type User struct {
 	Email      string
 	Password   string
 	Phone      string
-	Token      string    `gorm:"default:null"`
-	Created_at time.Time `gorm:"default:null"`
-	Updated_at time.Time `gorm:"default:null"`
+	Token      string
+	Created_at time.Time
+	Updated_at time.Time
 }
 
 var CurrentUser User
@@ -45,15 +46,15 @@ func StoreUser(req *http.Request) (result bool, error_msg string) {
 		return false, "The password confirmation does not match."
 	}
 	var existsUser User
-	db.Select("email").Where("email = ?", email).First(&existsUser)
-	if existsUser.Email != "" {
+	res := DB.QueryRow("select name from users where email = $1", email).Scan(&existsUser.Name)
+	if res != sql.ErrNoRows || existsUser.Name != "" {
 		return false, "Email has exists"
 	}
 
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	var user = User{Name: fullName, Email: email, Phone: telephone, Password: string(hashedPassword)}
-	creat := db.Create(&user)
-	if creat.Error != nil {
+	creat := DB.QueryRow("Insert into users(name, email, password, phone) values($1, $2, $3, $4) returning id;", user.Name, user.Email, user.Password, user.Phone).Scan(&user.Id)
+	if creat != nil {
 		return false, "Server error, unable to create your account"
 	}
 	return true, "User Created!"
@@ -69,13 +70,16 @@ func Login(res http.ResponseWriter, req *http.Request) (string, string) {
 		return "", "The email must be a valid email address."
 	}
 	var user User
-	result := db.Where("email = ?", email).First(&user)
-	// err := db.QueryRow("Select id, name, email, password from users where email =?", email).Scan(&idDb, &nameDb, &dbEmail, &dbPassword)
-	if result.Error != nil || bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
+	result := DB.QueryRow("select id, name, email, password from users where email = $1", email).Scan(&user.Id, &user.Name, &user.Email, &user.Password)
+	if result != nil || bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
 		return "", "Login fail"
 	}
 	user.Token = user.Password
-	db.Save(&user)
+	_, err := DB.Exec("Update users set token=$1 where id = $2", user.Token, user.Id)
+	if err != nil {
+		return "", "Login fail when update"
+	}
+
 	dataAuth := map[string]string{
 		"Id":    user.Id,
 		"Email": user.Email,
@@ -96,7 +100,7 @@ func CheckLoginWithSession(session string) bool {
 	if err != nil || token == "" {
 		return false
 	}
-	result := db.Where("token = ?", token).First(&user)
+	result := DB.QueryRow("select name from users where token = $1", token).Scan(&user.Name)
 	if result.Error == nil && user.Name != "" {
 		return true
 	}
