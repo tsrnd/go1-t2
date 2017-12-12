@@ -1,15 +1,15 @@
-package views
+package product
 
 import (
 	"html/template"
 	"log"
 	"path/filepath"
-	"goweb2/helper"
+	"goweb2/views/viewAdmin"
 )
 
 type ProductAdminView struct {
-	helper.View
-	Feed helper.Page
+	viewAdmin.View
+	Feed viewAdmin.Page
 }
 
 var ProductAdmin ProductAdminView
@@ -19,14 +19,15 @@ func ProductAdminFiles() []string {
 	if err != nil {
 		log.Panic(err)
 	}
-	files = append(files, helper.LayoutAdminFiles()...)
-	files = append(files, helper.LayoutAdminFilesIncludes()...)
+	files = append(files, viewAdmin.LayoutAdminFiles()...)
+	files = append(files, viewAdmin.LayoutAdminFilesIncludes()...)
+	
 	return files
 }
 
 func init() {
 	detailFiles := append(ProductAdminFiles(), "templates/admin/product/list.html")
-	ProductAdmin.Index = helper.Page{
+	ProductAdmin.Index = viewAdmin.Page{
 		Template: template.Must(template.New("list").ParseFiles(detailFiles...)),
 		Layout:   "admin_layout",
 	}
