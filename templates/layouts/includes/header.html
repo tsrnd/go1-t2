@@ -44,7 +44,7 @@
                     <li><a href="/login" class="log">Login</a></li>
                     <li><a href="/register" class="reg">Register</a></li>
                     {{else}}
-                    <li><h>Welcome {{.PrivateData.AuthData.Name}}</h></li>
+                    <li><a style="color:#f7544a">Welcome {{.PrivateData.AuthData.Name}}</a></li>
                     <li><a href="/logout" class="reg">Logout</a></li>
                     {{end}}
                 </ul>
@@ -60,7 +60,7 @@
               <li class="option-cart">
                 <a href="#" class="cart-icon">cart <span class="cart_no" id="count-cart">02</span></a>
                 <ul class="option-cart-item">
-                    {{ range .Data.Data }}
+                    {{ range .Cart }}
                     <li class="remove-{{ .CartDetailId }}">
                       <div class="cart-item">
                           <div class="image"><img src="/public/images/product/{{ .Image }}" alt=""></div>
@@ -76,29 +76,15 @@
                     </li>
                     {{ end }}
                     
-                    <li><span class="total">Total <strong id="subcar-total"></strong></span><button class="checkout" onClick="location.href='checkout.html'">CheckOut</button></li>
+                    <li><span class="total">Total <strong id="subcar-total"></strong></span><button class="checkout" onClick="location.href='/check-out'">CheckOut</button></li>
                 </ul>
               </li>
           </ul>
           <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
           <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li class="active dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Home</a>
-                    <div class="dropdown-menu">
-                      <ul class="mega-menu-links">
-                          <li><a href="/">home</a></li>
-                          <li><a href="/">home2</a></li>
-                          <li><a href="/">home3</a></li>
-                          <li><a href="productlitst.html">Productlitst</a></li>
-                          <li><a href="productgird.html">Productgird</a></li>
-                          <li><a href="details.html">Details</a></li>
-                          <li><a href="cart">Cart</a></li>
-                          <li><a href="checkout.html">CheckOut</a></li>
-                          <li><a href="checkout2.html">CheckOut2</a></li>
-                          <li><a href="contact.html">contact</a></li>
-                      </ul>
-                    </div>
+                <li class="active">
+                    <a href="/">Home</a>
                 </li>
                 <li><a href="productgird.html">men</a></li>
                 <li><a href="productlitst.html">women</a></li>

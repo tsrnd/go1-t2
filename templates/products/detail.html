@@ -6,7 +6,7 @@
                     <div class="products-details">
                     <div class="preview_image">
                         <div class="preview-small">
-                            <img id="zoom_03" src="/public/images/product/{{ .Product.Image }}" data-zoom-image="images/products/Large/products-01.jpg" alt="">
+                            <img id="zoom_03" src="/public/images/product/{{ .Data.Product.Image }}" data-zoom-image="images/products/Large/products-01.jpg" alt="">
                         </div>
                         <div class="thum-image">
                             <ul id="gallery_01" class="prev-thum">
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div class="products-description">
-                        <h5 class="name">{{ .Product.Name }}</h5>
+                        <h5 class="name">{{ .Data.Product.Name }}</h5>
                         <p>
                             <img alt="" src="/public/images/star.png">
                             <a class="review_num" href="#">
@@ -61,13 +61,13 @@
                             </span>
                         </p>
                         <p>
-                            {{ .Product.Description }}
+                            {{ .Data.Product.Description }}
                         </p>
                         <hr class="border">
                         <div class="price">
                         Price : 
                             <span class="new_price">
-                                {{ .Product.Price }}
+                                {{ .Data.Product.Price }}
                                 <sup>$</sup>
                             </span>
                             <span class="old_price">
@@ -81,8 +81,8 @@
                             <div class="qty">
                                 Qty &nbsp;&nbsp;: 
                                 <input type="number" name="quantity" value="1" style="width:30%">
-                                <input type="hidden" name="price" value="{{ .Product.Price }}">
-                                <input type="hidden" name="product_id" value="{{ .Product.Id }}">                                                                
+                                <input type="hidden" name="price" value="{{ .Data.Product.Price }}">
+                                <input type="hidden" name="product_id" value="{{ .Data.Product.Id }}">                                                                
                             </div>
                             <div class="button_group">
                                 <button class="button" >Add To Cart</button>
@@ -116,7 +116,7 @@
                         </div>
                         <div class="tab-content-wrap">
                             <div class="tab-content" id="Descraption">
-                                <p>{{ .Product.Description }} </p>
+                                <p>{{ .Data.Product.Description }} </p>
                             </div>
                             <div class="tab-content" id="Reviews">
                                 <form>
@@ -468,6 +468,6 @@
    
     <script>
         var base_url = '{{ .Url }}'
-        var data = {{ .Data }}
+        var data = {{ .Cart }}
     </script>
  {{end}}

@@ -19,8 +19,8 @@
             </tr>
         </thead>
         <tbody>
-            {{ if .Data }}
-            {{ range .Data }}
+            {{ if .Cart }}
+            {{ range .Cart }}
             <tr class = "remove-{{ .CartDetailId }}">
                 <td>
                     <img src="public/images/product/{{ .Image }}" alt="">
@@ -171,6 +171,6 @@
 </div>
 <script>
     var base_url = '{{ .Url }}'
-    var data = {{.Data}}
+    var data = {{.Cart}}
 </script>
 {{end}}
