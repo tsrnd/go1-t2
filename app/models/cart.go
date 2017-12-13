@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"log"
 	"time"
 )
@@ -64,7 +63,6 @@ func Remove(cartDetailId int64) (int64, error) {
 	res, err := delete.Exec(cartDetailId)
 	checkErr(err)
 	affect, err := res.RowsAffected()
-	fmt.Println("id remove", affect)
 	return affect, nil
 }
 
@@ -75,7 +73,6 @@ func Update(cartDetailId int64, quantity int, price float64) (int64, error) {
 	res, err := update.Exec(quantity, price, cartDetailId)
 	checkErr(err)
 	affect, err := res.RowsAffected()
-	fmt.Println("id update", affect)
 	return affect, err
 }
 

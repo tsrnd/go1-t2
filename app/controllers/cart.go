@@ -6,7 +6,6 @@ import (
 	"goweb2/app/models"
 	"goweb2/helper"
 	"goweb2/views"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -38,8 +37,6 @@ func (self CartController) Index(w http.ResponseWriter, r *http.Request, ps http
 	compact := map[string]interface{}{
 		"Title": "THIS IS A CARTS PAGE!",
 	}
-	order := helper.GetSession("order", r)
-	log.Println("order", order)
 	return views.Carts.Index.Render(w, r, compact)
 
 }

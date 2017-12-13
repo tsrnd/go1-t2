@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -46,6 +45,5 @@ func SetCurrentOrder(orderId interface{}, userId int64, totalPrice float64, addr
 	res, err := update.Exec(totalPrice, 1, userId, orderId)
 	checkErr(err)
 	affect, err := res.RowsAffected()
-	fmt.Println("id update", affect)
 	return affect, err
 }
