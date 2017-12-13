@@ -1,25 +1,23 @@
-package views
+package viewAdmin
 
 import (
 	"goweb2/app/models"
-	"goweb2/helper"
 	"html/template"
 	"log"
 	"net/http"
 	"path/filepath"
-	"strconv"
 )
 
-func LayoutFiles() []string {
-	files, err := filepath.Glob("templates/layouts/*.html")
+func LayoutAdminFiles() []string {
+	files, err := filepath.Glob("templates/layouts/admin/*.html")
 	if err != nil {
 		log.Panic(err)
 	}
 	return files
 }
 
-func LayoutFilesIncludes() []string {
-	filesInc, err := filepath.Glob("templates/layouts/includes/*.html")
+func LayoutAdminFilesIncludes() []string {
+	filesInc, err := filepath.Glob("templates/layouts/admin/includes/*.html")
 	if err != nil {
 		log.Panic(err)
 	}
@@ -49,19 +47,10 @@ func (self *Page) Render(w http.ResponseWriter, r *http.Request, data interface{
 	result := map[string]interface{}{
 		"Data":        data,
 		"PrivateData": sessionData,
-		"Cart":        GetCart(r),
-		"Url":         helper.BaseUrl(),
 	}
 	if err := self.Template.ExecuteTemplate(w, self.Layout, result); err != nil {
 		log.Printf("Failed to execute template: %v", err)
 	}
+	
 	return err
-}
-
-func GetCart(r *http.Request) interface{} {
-	order := helper.GetSession("order", r)
-	orderId, _ := strconv.Atoi(order)
-	listCart, _ := models.ShowCart(orderId)
-	log.Println("list", listCart)
-	return listCart
 }
