@@ -12,7 +12,7 @@ import (
 
 var db *sql.DB
 
-func ConnectDB() {
+func ConnectDB() *sql.DB{
 	var err error
 	er := godotenv.Load()
 	if er != nil {
@@ -23,6 +23,7 @@ func ConnectDB() {
 	if err != nil {
 		panic(err.Error())
 	}
+	return db
 
 }
 

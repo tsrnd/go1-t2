@@ -3,6 +3,7 @@ package admin
 import (
 	"goweb2/app/models"
 	"time"
+	"fmt"
 )
 
 /**
@@ -23,7 +24,7 @@ type Product struct {
  */
 func GetProductLimit() ([]*Product, error) {
 	var products []*Product
-	db := models.DB
+	db := models.ConnectDB()
 	rows, err := db.Query("SELECT id, name, description, image, price, created_at, updated_at FROM products")
 	if err != nil {
 
@@ -36,4 +37,23 @@ func GetProductLimit() ([]*Product, error) {
 	}
 
 	return products, nil
+}
+
+func DeleteProductById(id string) {
+	db := models.ConnectDB()
+	var products []*Product
+	rows, err := db.Query("SELECT id, name, description, image, price, created_at, updated_at FROM products WHERE id=$1", id)
+	if err != nil {
+		return
+	}
+	for rows.Next() {
+		product := &Product{}
+		rows.Scan(&product.Id, &product.Name, &product.Description, &product.Image, &product.Price, &product.Created_at, &product.Updated_at)
+		products = append(products, product)
+		fmt.Println(product)
+	}
+	value2, err2 := db.Exec("DELETE FROM cart_details WHERE product_id=$1", id)
+	fmt.Println(err2, value2)
+	value1, err1 := db.Exec("DELETE FROM products WHERE id=$1", id)
+	fmt.Println(err1, value1)
 }

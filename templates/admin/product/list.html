@@ -26,8 +26,7 @@
                     <td>{{ .Created_at }}</td>
                     <td>{{ .Updated_at }}</td>
                     <td>
-                        <button type="submit" class="btn btn-default">Edit</button>
-                        <button type="submit" class="btn btn-default">Delete</button>
+                        <a href="/admin/product/delete/{{ .Id }}">Delete</a>
                     </td>
                 </tr>
                 {{ end }}
