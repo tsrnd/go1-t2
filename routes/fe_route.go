@@ -12,6 +12,7 @@ func FeRoute(router *httprouter.Router) {
 	user := controllers.User
 	cart := controllers.Cart
 	product := controllers.Product
+	checkout := controllers.Checkout
 
 	var publicChain = []middleware.Middleware{
 		middleware.RedirectIfAuthenticated,
@@ -30,4 +31,6 @@ func FeRoute(router *httprouter.Router) {
 	router.POST("/remove-cart", cart.Delete)
 	router.POST("/update-cart", cart.Update)
 	router.POST("/add-to-cart", cart.Store)
+	router.GET("/check-out", middleware.BuildChain(checkout.Perform(checkout.Index), publicChain...))
+	router.POST("/check-out", middleware.BuildChain(checkout.Perform(checkout.Store), publicChain...))
 }

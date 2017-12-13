@@ -125,3 +125,7 @@ jQuery('#hot').on('click', '.add-cart', function () {
     var idForm = jQuery(this).data('id');
     jQuery('#'+idForm).submit();
 });
+jQuery('#totalprice').attr('value', totalPrice);
+jQuery('#submit-checkout').on('click', function() {
+    jQuery('#post-checkout').submit();
+})

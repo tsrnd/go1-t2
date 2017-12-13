@@ -60,30 +60,24 @@ type Page struct {
 func (self *Page) Render(w http.ResponseWriter, r *http.Request, data interface{}) (a error) {
 	sessionData := map[string]interface{}{
 		"AuthData": models.GetAuth(r),
-		"Cart":     GetCart(r),
 		"UrlPath":  r.URL.Path,
 	}
 	result := map[string]interface{}{
 		"Data":        data,
 		"PrivateData": sessionData,
+		"Cart":        GetCart(r),
+		"Url":         helper.BaseUrl(),
 	}
 	if err := self.Template.ExecuteTemplate(w, self.Layout, result); err != nil {
 		log.Printf("Failed to execute template: %v", err)
 	}
 	return a
-	// return self.Template.ExecuteTemplate(w, self.Layout, result)
 }
 
 func GetCart(r *http.Request) interface{} {
-	orderId := helper.GetSession("order", r)
-
-	if orderId == "" {
-		return nil
-	}
-	id, _ := strconv.ParseInt(orderId, 10, 32)
-	listCart, _ := models.ShowOrder(id)
-	if listCart == nil {
-		return nil
-	}
+	order := helper.GetSession("order", r)
+	orderId, _ := strconv.Atoi(order)
+	listCart, _ := models.ShowCart(orderId)
+	log.Println("list", listCart)
 	return listCart
 }

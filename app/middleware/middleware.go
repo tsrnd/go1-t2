@@ -8,5 +8,6 @@ func BuildChain(f httprouter.Handle, m ...Middleware) httprouter.Handle {
 	if len(m) == 0 {
 		return f
 	}
-	return m[0](BuildChain(f, m[1:cap(m)]...))
+	return f
+	// return m[0](BuildChain(f, m[1:cap(m)]...))
 }

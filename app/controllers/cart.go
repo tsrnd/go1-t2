@@ -6,6 +6,7 @@ import (
 	"goweb2/app/models"
 	"goweb2/helper"
 	"goweb2/views"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -34,14 +35,11 @@ var store = sessions.NewCookieStore([]byte("secret-password"))
 
 // list cart
 func (self CartController) Index(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
-	order := helper.GetSession("order", r)
-	orderId, _ := strconv.Atoi(order)
-	listCart, _ := models.ShowCart(orderId)
 	compact := map[string]interface{}{
 		"Title": "THIS IS A CARTS PAGE!",
-		"Url":   helper.BaseUrl(),
-		"Data":  listCart,
 	}
+	order := helper.GetSession("order", r)
+	log.Println("order", order)
 	return views.Carts.Index.Render(w, r, compact)
 
 }

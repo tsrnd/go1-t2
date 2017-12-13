@@ -7,7 +7,7 @@
             <ul id="hot">
                 <li>
                     <div class="row">
-                        {{ range .Products }}
+                        {{ range .Data.Products }}
                         <div class="col-md-3 col-sm-6">
                             <div class="products">
                                 <div class="offer">- Hot</div>
@@ -36,22 +36,24 @@
                 </li>
                 <li>
                     <div class="row">
-                        {{ range .Products }}
+                        {{ range .Data.Products }}
                         <div class="col-md-3 col-sm-6">
                             <div class="products">
                                 <div class="offer">- Hot</div>
                                 <div class="thumbnail">
-                                    <a href="details.html"><img src="public/images/product/{{ .Image }}" alt="{{ .Name }}">
+                                    <a href="/product/{{ .Id }}"><img src="public/images/product/{{ .Image }}" alt="{{ .Name }}">
                                     </a>
                                 </div>
                                 <div class="productname">{{ .Name }}</div>
                                 <h4 class="price">${{ .Price }}</h4>
-                                <form method="POST" action="">
+                                <form method="POST" action="/add-to-cart" id="form2-{{ .Id }}">
                                     <div class="form-group">
-                                        <input type="hidden" class="form-control" value="{{ .Id }}">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <input type="hidden" name="price" value="{{ .Price }}">
+                                        <input type="hidden" name="product_id" value="{{ .Id }}">
                                     </div>
                                     <div class="button_group">
-                                        <button class="button add-cart" type="button">Add To Cart</button>
+                                        <button class="button add-cart" type="button" data-id="form2-{{ .Id }}">Add To Cart</button>
                                         <button class="button compare" type="button"><i class="fa fa-exchange"></i></button>
                                         <button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button>
                                     </div>
@@ -67,7 +69,7 @@
     </div>
 </div>
 <script>
-    var base_url = '/'
-    var data = {{.Data}}
+    var base_url = '{{ .Url }}'
+    var data = {{.Cart}}
 </script>
 {{end}}
