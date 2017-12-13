@@ -24,6 +24,11 @@ func (self CheckoutController) Index(w http.ResponseWriter, r *http.Request, ps 
 	if order == "" {
 		http.Redirect(w, r, helper.BaseUrl(), http.StatusSeeOther)
 	}
+	user := models.GetAuth(r)
+	idUser, _ := strconv.ParseInt(user.Id, 10, 64)
+	if idUser == 0 {
+		http.Redirect(w, r, helper.Url("login"), http.StatusSeeOther)
+	}
 	compact := map[string]interface{}{
 		"Title": "THIS IS A CHECKOUT PAGE!",
 	}
