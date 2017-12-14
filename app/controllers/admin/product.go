@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"github.com/julienschmidt/httprouter"
 	"regexp"
+	// "fmt"
 )
 
 type ProductAdminController struct {

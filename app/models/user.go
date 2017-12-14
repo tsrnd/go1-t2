@@ -47,16 +47,16 @@ func StoreUser(req *http.Request) (result bool, error_msg string) {
 		return false, "The password confirmation does not match."
 	}
 	var existsUser User
-	res := db.QueryRow("select name from users where email = $1", email).Scan(&existsUser.Name)
+	res := Db.QueryRow("select name from users where email = $1", email).Scan(&existsUser.Name)
 	if res != sql.ErrNoRows || existsUser.Name != "" {
 		return false, "Email has exists"
 	}
 
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	// var user = User{Name: fullName, Email: email, Phone: telephone, Password: string(hashedPassword)}
-	// db.QueryRow("INSERT INTO users(name, email, password, phone) VALUES($1, $2, $3, $4) returning id;", user.Name, user.Email, user.Password, user.Phone).Scan(&user.Id)
+	// Db.QueryRow("INSERT INTO users(name, email, password, phone) VALUES($1, $2, $3, $4) returning id;", user.Name, user.Email, user.Password, user.Phone).Scan(&user.Id)
 	var Id int64
-	err := db.QueryRow("INSERT INTO users(name, email, password, phone, created_at) VALUES($1, $2, $3, $4, $5) returning id;", fullName, email, string(hashedPassword), telephone, time.Now()).Scan(&Id)
+	err := Db.QueryRow("INSERT INTO users(name, email, password, phone, created_at) VALUES($1, $2, $3, $4, $5) returning id;", fullName, email, string(hashedPassword), telephone, time.Now()).Scan(&Id)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -76,12 +76,12 @@ func Login(res http.ResponseWriter, req *http.Request) (string, string) {
 		return "", "The email must be a valid email address."
 	}
 	var user User
-	result := db.QueryRow("select id, name, email, password from users where email = $1", email).Scan(&user.Id, &user.Name, &user.Email, &user.Password)
+	result := Db.QueryRow("select id, name, email, password from users where email = $1", email).Scan(&user.Id, &user.Name, &user.Email, &user.Password)
 	if result != nil || bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
 		return "", "Login fail"
 	}
 	user.Token = user.Password
-	_, err := db.Exec("Update users set token=$1 where id = $2", user.Token, user.Id)
+	_, err := Db.Exec("Update users set token=$1 where id = $2", user.Token, user.Id)
 	if err != nil {
 		return "", "Login fail when update"
 	}
@@ -106,7 +106,7 @@ func CheckLoginWithSession(session string) bool {
 	if err != nil || token == "" {
 		return false
 	}
-	result := db.QueryRow("select name from users where token = $1", token).Scan(&user.Name)
+	result := Db.QueryRow("select name from users where token = $1", token).Scan(&user.Name)
 
 	if result.Error == nil && user.Name != "" {
 		return true
