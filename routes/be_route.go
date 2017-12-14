@@ -14,4 +14,6 @@ func BeRoute(router *httprouter.Router) {
 	router.GET("/admin/product/create", adminproduct.Perform(adminproduct.Create))
 	router.POST("/admin/product/", adminproduct.Perform(adminproduct.Store))
 	router.GET("/admin", adminIndex.Perform(adminIndex.Index))
+	router.GET("/admin/product/delete/:id", adminproduct.Perform(adminproduct.Delete))
+	router.GET("/admin/product/showForm", adminproduct.Perform(adminproduct.ShowFormStore))
 }

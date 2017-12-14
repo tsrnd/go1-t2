@@ -3,6 +3,7 @@ package admin
 import (
 	"fmt"
 	"goweb2/app/models"
+	"goweb2/helper"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -31,24 +32,19 @@ type Product struct {
  */
 func GetProductLimit() ([]*Product, error) {
 	var products []*Product
-	db := models.DB
-	rows, err := db.Query("SELECT id, name, description, image, price, created_at, updated_at FROM products")
-	if err != nil {
-
-		return nil, err
-	}
+	rows, err := models.Db.Query("SELECT id, name, description, image, price, created_at, updated_at FROM products")
+	helper.Handle(err)
 	for rows.Next() {
 		product := &Product{}
 		rows.Scan(&product.Id, &product.Name, &product.Description, &product.Image, &product.Price, &product.Created_at, &product.Updated_at)
 		products = append(products, product)
 	}
-
 	return products, nil
 }
 
 func GetProduct(id int64) (Product, error) {
 	var product Product
-	err := models.DB.QueryRow("SELECT id, name, description, image, price, created_at, updated_at FROM products where id = $1 limit 1", id).Scan(&product.Id, &product.Name, &product.Description, &product.Image, &product.Price, &product.Created_at, &product.Updated_at)
+	err := models.Db.QueryRow("SELECT id, name, description, image, price, created_at, updated_at FROM products where id = $1 limit 1", id).Scan(&product.Id, &product.Name, &product.Description, &product.Image, &product.Price, &product.Created_at, &product.Updated_at)
 	if err != nil {
 		return product, err
 	}
@@ -68,7 +64,7 @@ func CreateProduct(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 		image = updateImage(file, handler)
 	}
 	fmt.Println(image)
-	_, createErr := models.DB.Exec("INSERT INTO products(name, description, price, image, category_id) VALUES ($1, $2, $3, $4, $5);", name, description, price, image, categoryId)
+	_, createErr := models.Db.Exec("INSERT INTO products(name, description, price, image, category_id) VALUES ($1, $2, $3, $4, $5);", name, description, price, image, categoryId)
 	if createErr != nil {
 		return createErr
 	}
@@ -85,4 +81,21 @@ func updateImage(file multipart.File, handler *multipart.FileHeader) string {
 	defer f.Close()
 	io.Copy(f, file)
 	return handler.Filename
+}
+func DeleteProductById(id string) {
+	var products []*Product
+	rows, err := models.Db.Query("SELECT id, name, description, image, price, created_at, updated_at FROM products WHERE id=$1", id)
+	helper.Handle(err)
+	for rows.Next() {
+		product := &Product{}
+		rows.Scan(&product.Id, &product.Name, &product.Description, &product.Image, &product.Price, &product.Created_at, &product.Updated_at)
+		products = append(products, product)
+		fmt.Println(product)
+	}
+	value2, err2 := models.Db.Exec("DELETE FROM cart_details WHERE product_id=$1", id)
+	helper.Handle(err2)
+	fmt.Println(value2)
+	value1, err1 := models.Db.Exec("DELETE FROM products WHERE id=$1", id)
+	helper.Handle(err1)
+	fmt.Println(value1)
 }

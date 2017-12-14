@@ -4,8 +4,8 @@ import (
 	"goweb2/app/models"
 	"goweb2/helper"
 	"goweb2/views"
+	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -62,12 +62,13 @@ func (self UserController) Login(w http.ResponseWriter, r *http.Request, ps http
 		http.Redirect(w, r, "/login", 302)
 		return a
 	}
-	orderId := helper.GetSession("order", r)
-	if orderId != "" && orderId != "0" {
-		id, _ := strconv.ParseInt(orderId, 10, 32)
-		userId, _ := strconv.ParseInt(ok, 10, 32)
-		models.SetCurrentOrder(id, userId)
-	}
+	// orderId := helper.GetSession("order", r)
+	// if orderId != "" && orderId != "0" {
+	// 	id, _ := strconv.ParseInt(orderId, 10, 32)
+	// 	userId, _ := strconv.ParseInt(ok, 10, 32)
+	// 	models.SetCurrentOrder(id, userId, 0)
+	// }
+	log.Println("oke", ok)
 	http.Redirect(w, r, "/", 302)
 	return a
 }

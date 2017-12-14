@@ -20,8 +20,7 @@ type Category struct {
  */
 func GetCategory() ([]*Category, error) {
 	var categories []*Category
-	db := models.DB
-	rows, err := db.Query("SELECT id, name, created_at, updated_at FROM categories")
+	rows, err := models.Db.Query("SELECT id, name, created_at, updated_at FROM categories")
 	if err != nil {
 
 		return nil, err

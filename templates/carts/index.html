@@ -19,8 +19,8 @@
             </tr>
         </thead>
         <tbody>
-            {{ if .Data }}
-            {{ range .Data }}
+            {{ if .Cart }}
+            {{ range .Cart }}
             <tr class = "remove-{{ .CartDetailId }}">
                 <td>
                     <img src="public/images/product/{{ .Image }}" alt="">
@@ -71,7 +71,7 @@
                                 <h5 style="width:47%">GRAND TOTAL </h5>
                                 <span id="grand-total"></span>
                             </div>
-                            <a class="btn btn-default">Process To Checkout</a>
+                            <a class="btn btn-default" href="/check-out">Process To Checkout</a>
                         </div>
                     </div>
                 </td>
@@ -171,6 +171,6 @@
 </div>
 <script>
     var base_url = '{{ .Url }}'
-    var data = {{.Data}}
+    var data = {{.Cart}}
 </script>
 {{end}}

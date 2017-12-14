@@ -7,7 +7,10 @@ import (
 	"net/http"
 	"strconv"
 
+	"regexp"
+
 	"github.com/julienschmidt/httprouter"
+	// "fmt"
 )
 
 type ProductAdminController struct {
@@ -58,4 +61,24 @@ func (self ProductAdminController) Store(w http.ResponseWriter, r *http.Request,
 	admin.CreateProduct(w, r, ps)
 	http.Redirect(w, r, "/admin/products", 302)
 	return nil
+}
+func (self ProductAdminController) Delete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
+	reg, _ := regexp.Compile(`\d+$`)
+	productId := reg.FindString(r.URL.Path)
+	admin.DeleteProductById(productId)
+	compact := map[string]interface{}{
+		"Title": "THIS IS A HOME PAGE!",
+		"Url":   helper.BaseUrl(),
+	}
+
+	return product.ProductAdmin.Index.Render(w, r, compact)
+}
+
+func (self ProductAdminController) ShowFormStore(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
+	compact := map[string]interface{}{
+		"Title": "THIS IS A HOME PAGE!",
+		"Url":   helper.BaseUrl(),
+	}
+
+	return product.FormAddProductAdmin.Index.Render(w, r, compact)
 }

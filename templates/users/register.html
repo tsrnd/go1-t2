@@ -4,7 +4,7 @@
   <div class="checkout-page">
     <div class="checkout-steps">
         <div class="step-description">
-          {{if eq .Status false}}
+          {{if eq .Data.Status false}}
           <form method="POST" action="/register">
             <div class="row">
               <div class="col-md-6 col-sm-6">
@@ -12,9 +12,9 @@
                   <h5>
                     Your Persional Details
                   </h5>
-                  {{if ne .Messeage ""}}
+                  {{if ne .Data.Messeage ""}}
                     <div class="alert alert-danger">
-                      {{.Messeage}}
+                      {{.Data.Messeage}}
                     </div>
                   {{end}}
                   <div class="form-row">
@@ -88,4 +88,8 @@
   </div>
 </div>
 </div>
+<script>
+    var base_url = '/'
+    var data = {{.Cart}}
+</script>
 {{end}}
