@@ -1,0 +1,50 @@
+{{define "content"}}
+<div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">Input data for product</h3>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    <form role="form" enctype="multipart/form-data" action="/admin/product" method="post">
+      <div class="box-body">
+        <div class="row">
+        <div class="col-md-6">
+        <div class="form-group">
+          <label for="nam">Name</label>
+          <input type="text" class="form-control" name="name" id="name" placeholder="Enter name">
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea class="form-control" rows="5" name="description" id="description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="text" class="form-control" id="price" name="price">
+        </div>
+        <div class="form-group">
+            <label>Category</label>
+            <select class="form-control select2" style="width: 100%;" id="category_id" name="category_id">
+              {{range .Data.Categories}}
+              <option value="{{.Id}}" selected="selected">{{.Name}}</option>
+              {{end}}
+            </select>
+          </div>
+        
+      </div>
+      <div class="col-md-6">
+          <div class="form-group">
+              <label for="image">Image</label>
+              <input type="file" id="image" name="image" accept="image/*">
+              <p class="help-block">Only image</p>
+            </div>
+      </div>
+      </div>
+      <!-- /.box-body -->
+
+      <div class="box-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+    </form>
+  </div>
+{{end}}
