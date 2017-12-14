@@ -22,7 +22,7 @@ type Product struct {
  */
 func GetProductLimit() ([]*Product, error) {
 	products := make([]*Product, 0)
-	rows, _ := db.Query("select id, name, description, image, price, created_at, updated_at FROM products ORDER BY id DESC LIMIT 10")
+	rows, _ := Db.Query("select id, name, description, image, price, created_at, updated_at FROM products ORDER BY id DESC LIMIT 10")
 	for rows.Next() {
 		product := new(Product)
 		err := rows.Scan(&product.Id, &product.Name, &product.Description, &product.Image, &product.Price, &product.Created_at, &product.Updated_at)
@@ -36,7 +36,7 @@ func GetProductLimit() ([]*Product, error) {
 
 func ShowProduct(id string) (Product, error) {
 	var product Product
-	err := db.QueryRow("select id, name, description, image, price, created_at, updated_at FROM products WHERE id = $1", id).Scan(&product.Id, &product.Name, &product.Description, &product.Image, &product.Price, &product.Created_at, &product.Updated_at)
+	err := Db.QueryRow("select id, name, description, image, price, created_at, updated_at FROM products WHERE id = $1", id).Scan(&product.Id, &product.Name, &product.Description, &product.Image, &product.Price, &product.Created_at, &product.Updated_at)
 	return product, err
 
 }
