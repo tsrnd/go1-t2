@@ -1,11 +1,18 @@
 package main
 
 import (
-	"goweb2/app/models"
-	"goweb2/routes"
+	"log"
+	"net/http"
+
+	"goweb2/config"
 )
 
 func main() {
-	models.ConnectDB()
-	routes.Route()
+	db := config.DB()
+	cache := config.Cache()
+	router := config.Router(db, cache)
+	port := config.Port()
+	if err := http.ListenAndServe(port, router); err != nil {
+		log.Fatal(err)
+	}
 }
