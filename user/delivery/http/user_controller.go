@@ -1,20 +1,21 @@
 package http
 
 import (
-	"net/http"
 	"encoding/json"
+	"net/http"
 	"strconv"
 
-	"github.com/go-chi/chi"
-	"goweb2/user/usecase"
-	"goweb2/user/delivery/http/request"
 	"goweb2/services/cache"
+	"goweb2/user/delivery/http/request"
+	"goweb2/user/usecase"
+
+	"github.com/go-chi/chi"
 )
 
 // UserController type
 type UserController struct {
-  	Usecase usecase.UserUsecase
-  	Cache   cache.Cache
+	Usecase usecase.UserUsecase
+	Cache   cache.Cache
 }
 
 // NewUserController func
@@ -39,7 +40,8 @@ func (ctrl *UserController) Get(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	var request request.UserGetRequest
-	request.ID = int64 (userID)
+	request.ID = int64(userID)
+
 	user, err := ctrl.Usecase.GetByID(request.ID)
 	if err != nil {
 		http.Error(w, "Not Found", http.StatusNotFound)
