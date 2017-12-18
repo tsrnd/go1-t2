@@ -18,17 +18,7 @@ type userRepository struct {
 
 // GetByID func
 func (m *userRepository) GetByID(id int64) (*model.User, error) {
-	const query = `
-    select
-      id,
-      name,
-      email,
-      phone
-    from
-      users
-    where
-      id = $1
-  `
+	const query = `SELECT id, name, email, phone FROM users WHERE id = $1`
 	var user model.User
 	err := m.DB.QueryRow(query, id).Scan(&user.ID,  &user.Name, &user.Email, &user.Phone)
 	return &user, err
