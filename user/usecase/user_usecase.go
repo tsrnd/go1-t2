@@ -2,7 +2,7 @@ package usecase
 
 import (
 	model "goweb2/user"
-	repos "goweb2/user/repository"
+	userRepo "goweb2/user/repository"
 )
 
 // UserUsecase interface
@@ -12,15 +12,15 @@ type UserUsecase interface {
 
 // userUsecase struct
 type userUsecase struct {
-	userRepos repos.UserRepository
+	userRepo userRepo.UserRepository
 }
 
 // GetByID func
 func (us *userUsecase) GetByID(id int64) (*model.User, error) {
-	return us.userRepos.GetByID(id)
+	return us.userRepo.GetByID(id)
 }
 
 // NewUserUsecase func
-func NewUserUsecase(us repos.UserRepository) UserUsecase {
+func NewUserUsecase(us userRepo.UserRepository) UserUsecase {
 	return &userUsecase{us}
 }
